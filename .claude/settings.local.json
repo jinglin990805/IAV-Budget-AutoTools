@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 po_pdf_parser.py)"
+    ]
+  }
+}

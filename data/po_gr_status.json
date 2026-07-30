@@ -1,0 +1,182 @@
+{
+  "_schema_version": "1.0",
+  "_last_updated": "2026-07-28",
+  "projects": [
+    {
+      "project_code": "CNTS-25165",
+      "project_name": "VCTC AI",
+      "customer": "VCTC",
+      "department": "TV",
+      "responsible": "Lin Jing",
+      "iavs_coordinator": "Wu Ning",
+      "cost_centers": ["11000"],
+      "pos": [
+        {
+          "po_id": "2601000336",
+          "amount_rmb": 324720,
+          "received_date": "2026-01-15",
+          "valid_until": "2026-04-30",
+          "gr_status": "done",
+          "gr_date": "2026-05-15",
+          "invoice_status": "done",
+          "invoice_date": "2026-05-20",
+          "subcontract_ac_status": "n/a",
+          "notes": "Q1 group PO (Cui Han, Chen Yakun)"
+        },
+        {
+          "po_id": "2601000337",
+          "amount_rmb": 623040,
+          "received_date": "2026-01-15",
+          "valid_until": "2026-04-30",
+          "gr_status": "done",
+          "gr_date": "2026-05-15",
+          "invoice_status": "done",
+          "invoice_date": "2026-05-20",
+          "subcontract_ac_status": "n/a",
+          "notes": "Q1 group PO (Tang Qiwei, Zhao Shihui, Yin Zicheng, Lv Ansheng)"
+        },
+        {
+          "po_id": "2601000338",
+          "amount_rmb": 855360,
+          "received_date": "2026-01-15",
+          "valid_until": "2026-04-30",
+          "gr_status": "done",
+          "gr_date": "2026-05-15",
+          "invoice_status": "done",
+          "invoice_date": "2026-05-20",
+          "subcontract_ac_status": "n/a",
+          "notes": "Q1 group PO (Li Xiaoxuan, Hou Jing, Huang Dejia, Xuan Liangliang, Liu Xu, Sun Shumin)"
+        },
+        {
+          "po_id": "2604000799",
+          "amount_rmb": 1884400,
+          "received_date": "2026-04-15",
+          "valid_until": "2026-09-30",
+          "gr_status": "pending",
+          "gr_date": null,
+          "gr_deadline": "2026-09-30",
+          "invoice_status": "pending",
+          "invoice_date": null,
+          "subcontract_ac_status": "n/a",
+          "notes": "Q2-Q3 all-hands PO"
+        },
+        {
+          "po_id": "2607000312",
+          "amount_rmb": 1711540,
+          "received_date": "2026-07-03",
+          "valid_until": "2026-12-31",
+          "gr_status": "pending",
+          "gr_date": null,
+          "gr_deadline": "2026-12-31",
+          "invoice_status": "pending",
+          "invoice_date": null,
+          "subcontract_ac_status": "n/a",
+          "notes": "Q3-Q4 all-hands PO (180d×2100 + 85d×2260 + 464d×2460)"
+        }
+      ]
+    },
+    {
+      "project_code": "CN03-22052",
+      "project_name": "PPE",
+      "customer": "CARIAD",
+      "department": "TV",
+      "responsible": "Lin Jing",
+      "cost_centers": ["10000", "11000", "12000", "13000", "14000"],
+      "pos": [
+        {
+          "po_id": "7300060234",
+          "amount_rmb": 0,
+          "received_date": "2026-05-01",
+          "valid_until": "",
+          "gr_status": "pending",
+          "gr_date": null,
+          "gr_deadline": "",
+          "invoice_status": "pending",
+          "invoice_date": null,
+          "subcontract_ac_status": "n/a",
+          "notes": "2026 Q1+Q2 PO (Stephan) - 待确认详情"
+        }
+      ]
+    },
+    {
+      "project_code": "CN03-22039",
+      "project_name": "CADA/CAPA",
+      "customer": "CARIAD",
+      "department": "TV",
+      "responsible": "Liu Jiaqi",
+      "cost_centers": ["11000", "12000"],
+      "pos": [
+        {
+          "po_id": "7300058773",
+          "amount_rmb": 0,
+          "received_date": "2026-01-01",
+          "valid_until": "",
+          "gr_status": "done",
+          "gr_date": "",
+          "invoice_status": "done",
+          "invoice_date": "",
+          "subcontract_ac_status": "n/a",
+          "notes": "Friedrich continue to work in 2026 Q1"
+        },
+        {
+          "po_id": "7300060234",
+          "amount_rmb": 0,
+          "received_date": "2026-04-01",
+          "valid_until": "",
+          "gr_status": "pending",
+          "gr_date": null,
+          "gr_deadline": "",
+          "invoice_status": "pending",
+          "invoice_date": null,
+          "subcontract_ac_status": "n/a",
+          "notes": "Q2 PO"
+        },
+        {
+          "po_id": "7300061891",
+          "amount_rmb": 0,
+          "received_date": "2026-07-01",
+          "valid_until": "",
+          "gr_status": "pending",
+          "gr_date": null,
+          "gr_deadline": "",
+          "invoice_status": "pending",
+          "invoice_date": null,
+          "subcontract_ac_status": "n/a",
+          "notes": "Q3 PO"
+        }
+      ]
+    },
+    {
+      "project_code": "CN04-22028",
+      "project_name": "TTA",
+      "customer": "CARIAD",
+      "department": "TV",
+      "responsible": "Li Yang",
+      "iavs_coordinator": "Qian Haiqing",
+      "cost_centers": ["11000", "12000"],
+      "pos": [
+        {
+          "po_id": "7300058486",
+          "amount_rmb": 0,
+          "received_date": "2026-01-01",
+          "valid_until": "",
+          "gr_status": "done",
+          "gr_date": "",
+          "invoice_status": "done",
+          "invoice_date": "",
+          "subcontract_ac_status": "n/a",
+          "notes": "T&M, IAV+T1"
+        }
+      ]
+    },
+    {
+      "project_code": "CN71-21043",
+      "project_name": "TTA2",
+      "customer": "CARIAD",
+      "department": "TV",
+      "responsible": "",
+      "cost_centers": ["10000"],
+      "pos": []
+    }
+  ]
+}

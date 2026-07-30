@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IAV TV 项目管理工作台</title>
+<style>
+/* ============================================================
+   CSS Variables & Reset
+   ============================================================ */
+:root {
+  --sidebar-width: 220px;
+  --header-height: 56px;
+  --primary: #2F5496;
+  --primary-light: #e8eef7;
+  --danger: #c0392b;
+  --warning: #e67e22;
+  --success: #27ae60;
+  --info: #2980b9;
+  --bg: #f5f6fa;
+  --card-bg: #fff;
+  --text: #2c3e50;
+  --text-secondary: #7f8c8d;
+  --border: #e1e4e8;
+  --shadow: 0 1px 3px rgba(0,0,0,.08);
+  --radius: 8px;
+  --transition: .2s ease;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  background: var(--bg); color: var(--text);
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-rows: var(--header-height) 1fr;
+  grid-template-areas: "sidebar header" "sidebar main";
+  height: 100vh; overflow: hidden;
+}
+
+/* ============================================================
+   Sidebar
+   ============================================================ */
+.sidebar {
+  grid-area: sidebar;
+  background: linear-gradient(180deg, #1a2a4a 0%, #2F5496 100%);
+  color: #fff;
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+.sidebar-logo {
+  padding: 16px 20px;
+  font-size: 15px; font-weight: 700;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  letter-spacing: .5px;
+  white-space: nowrap;
+}
+.sidebar-logo span { color: #85c1e9; font-size: 11px; display:block; font-weight:400; margin-top:2px; }
+.sidebar-nav { flex:1; padding: 8px 0; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 20px; cursor: pointer;
+  font-size: 13.5px; color: rgba(255,255,255,.75);
+  transition: var(--transition); border-left: 3px solid transparent;
+  text-decoration: none;
+}
+.nav-item:hover { background: rgba(255,255,255,.08); color: #fff; }
+.nav-item.active { background: rgba(255,255,255,.12); color: #fff; border-left-color: #85c1e9; font-weight: 600; }
+.nav-item .icon { font-size: 17px; width: 24px; text-align: center; flex-shrink: 0; }
+.nav-divider {
+  margin: 8px 16px; border-top: 1px solid rgba(255,255,255,.1);
+}
+.sidebar-footer {
+  padding: 12px 20px; font-size: 11px; color: rgba(255,255,255,.4);
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
+.header {
+  grid-area: header;
+  background: var(--card-bg); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 24px; gap: 16px;
+  box-shadow: var(--shadow); z-index: 10;
+}
+.search-box {
+  flex:1; max-width: 480px; position: relative;
+}
+.search-box input {
+  width:100%; padding: 8px 12px 8px 36px; border: 1px solid var(--border);
+  border-radius: 20px; font-size: 13px; outline: none;
+  background: var(--bg); transition: var(--transition);
+}
+.search-box input:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(47,84,150,.1); }
+.search-box .search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--text-secondary); font-size: 14px;
+}
+.search-results {
+  display: none; position: absolute; top: 100%; left: 0; right: 0;
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,.12); max-height: 400px; overflow-y: auto;
+  z-index: 100; margin-top: 4px;
+}
+.search-results.show { display: block; }
+.search-result-item {
+  padding: 10px 16px; cursor: pointer; border-bottom: 1px solid var(--border);
+  font-size: 13px; transition: var(--transition);
+}
+.search-result-item:hover { background: var(--primary-light); }
+.search-result-item .tag { font-size: 10px; padding: 2px 6px; border-radius: 3px; margin-right: 6px; }
+.tag-project { background: #d5f5e3; color: #1e8449; }
+.tag-po { background: #d6eaf8; color: #2471a3; }
+.tag-doc { background: #fdebd0; color: #b9770e; }
+.header-actions { display: flex; align-items: center; gap: 12px; }
+.header-time { font-size: 12px; color: var(--text-secondary); }
+.btn-refresh {
+  padding: 6px 14px; border: 1px solid var(--border); border-radius: 16px;
+  background: #fff; cursor: pointer; font-size: 12px; transition: var(--transition);
+}
+.btn-refresh:hover { background: var(--bg); }
+
+/* ============================================================
+   Main Content
+   ============================================================ */
+.main {
+  grid-area: main; overflow-y: auto; padding: 24px;
+}
+.page { display: none; }
+.page.active { display: block; }
+.page-title {
+  font-size: 22px; font-weight: 700; margin-bottom: 4px;
+}
+.page-subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; }
+
+/* Cards */
+.cards-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px; margin-bottom: 24px;
+}
+.card {
+  background: var(--card-bg); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px;
+  border: 1px solid var(--border); transition: var(--transition);
+}
+.card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+.card-title {
+  font-size: 14px; font-weight: 600; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-title .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dot-danger { background: var(--danger); }
+.dot-warning { background: var(--warning); }
+.dot-success { background: var(--success); }
+.dot-info { background: var(--info); }
+
+/* Alert cards */
+.alert-item {
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.alert-item:last-child { border-bottom: none; }
+.alert-level { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+.level-danger { background: #fadbd8; color: #922b21; }
+.level-warning { background: #fdebd0; color: #7d6608; }
+.level-info { background: #d6eaf8; color: #1a5276; }
+.alert-text { font-size: 13px; flex:1; margin: 0 12px; }
+.alert-project { font-size: 11px; color: var(--text-secondary); }
+
+/* Stat cards */
+.stat-value { font-size: 28px; font-weight: 700; color: var(--primary); }
+.stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* Timeline */
+.timeline { position: relative; padding-left: 20px; }
+.timeline::before {
+  content: ''; position: absolute; left: 6px; top: 0; bottom: 0;
+  width: 2px; background: var(--border);
+}
+.timeline-item {
+  position: relative; padding: 6px 0 16px 16px; font-size: 13px;
+}
+.timeline-item::before {
+  content: ''; position: absolute; left: -17px; top: 10px;
+  width: 10px; height: 10px; border-radius: 50%; background: var(--primary);
+}
+.timeline-item.tl-warning::before { background: var(--warning); }
+.timeline-item.tl-danger::before { background: var(--danger); }
+.timeline-date { font-size: 11px; color: var(--text-secondary); }
+
+/* Buttons */
+.btn {
+  padding: 8px 18px; border: none; border-radius: 6px;
+  cursor: pointer; font-size: 13px; font-weight: 500;
+  transition: var(--transition); display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: #1e3a6e; }
+.btn-outline { background: #fff; border: 1px solid var(--border); color: var(--text); }
+.btn-outline:hover { background: var(--bg); }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-success { background: var(--success); color: #fff; }
+.btn-danger { background: var(--danger); color: #fff; }
+
+/* Tables */
+.data-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+  background: var(--card-bg); border-radius: var(--radius); overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.data-table th {
+  background: var(--primary); color: #fff; padding: 10px 14px;
+  text-align: left; font-weight: 500; font-size: 12px;
+}
+.data-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); }
+.data-table tr:hover td { background: var(--primary-light); }
+.data-table .editable { cursor: pointer; border-bottom: 1px dashed var(--text-secondary); }
+.data-table .editable:hover { background: #fef9e7; }
+
+/* Status badges */
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 12px;
+  font-size: 11px; font-weight: 600;
+}
+.badge-done { background: #d5f5e3; color: #1e8449; }
+.badge-pending { background: #fdebd0; color: #b9770e; }
+.badge-overdue { background: #fadbd8; color: #c0392b; }
+
+/* Tool page */
+.tool-panel {
+  background: var(--card-bg); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 24px; border: 1px solid var(--border);
+}
+.tool-output {
+  background: #1e1e1e; color: #d4d4d4; font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 12px; padding: 16px; border-radius: var(--radius);
+  max-height: 400px; overflow-y: auto; white-space: pre-wrap;
+  margin-top: 16px; display: none;
+}
+.tool-output.show { display: block; }
+.spinner {
+  display: inline-block; width: 16px; height: 16px; border: 2px solid #ccc;
+  border-top-color: var(--primary); border-radius: 50%;
+  animation: spin .6s linear infinite; vertical-align: middle; margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Knowledge cards */
+.kb-card {
+  padding: 16px; cursor: pointer; transition: var(--transition);
+}
+.kb-card:hover { background: var(--primary-light); }
+.kb-card h4 { font-size: 14px; margin-bottom: 4px; }
+.kb-card p { font-size: 12px; color: var(--text-secondary); }
+
+/* Modal */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.4); z-index: 200;
+  align-items: center; justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: #fff; border-radius: var(--radius); padding: 24px;
+  width: 400px; max-width: 90vw; box-shadow: 0 8px 30px rgba(0,0,0,.2);
+}
+.modal h3 { margin-bottom: 16px; }
+.modal input, .modal select {
+  width: 100%; padding: 8px 12px; border: 1px solid var(--border);
+  border-radius: 6px; font-size: 13px; margin-bottom: 12px;
+}
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  body { grid-template-columns: 1fr; grid-template-areas: "header" "main"; }
+  .sidebar { display: none; }
+  .cards-grid { grid-template-columns: 1fr; }
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 300;
+  padding: 12px 20px; border-radius: 8px; color: #fff; font-size: 13px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2); animation: slideUp .3s ease;
+  display: none;
+}
+.toast.show { display: block; }
+.toast-success { background: var(--success); }
+.toast-error { background: var(--danger); }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     Sidebar
+     ============================================================ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    📊 IAV TV 工作台
+    <span>Project Management Dashboard</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-item active" data-page="dashboard"><span class="icon">🏠</span>首页看板</div>
+    <div class="nav-item" data-page="po-allocator"><span class="icon">📊</span>PO 工时规划</div>
+    <div class="nav-item" data-page="budget-updater"><span class="icon">📈</span>Budget 月度更新</div>
+    <div class="nav-item" data-page="travel-summary"><span class="icon">✈️</span>差旅汇总</div>
+    <div class="nav-divider"></div>
+    <div class="nav-item" data-page="po-gr-status"><span class="icon">📋</span>PO/GR 状态追踪</div>
+    <div class="nav-item" data-page="knowledge-base"><span class="icon">📚</span>知识库 & 模板</div>
+    <div class="nav-divider"></div>
+    <div class="nav-item" data-page="tools"><span class="icon">🔧</span>小工具</div>
+  </nav>
+  <div class="sidebar-footer">v2.0 · AutoTools</div>
+</aside>
+
+<!-- ============================================================
+     Header
+     ============================================================ -->
+<header class="header">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="搜索项目号、PO号、人员、文档…" autocomplete="off">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+  <div class="header-actions">
+    <span class="header-time" id="headerTime"></span>
+    <button class="btn-refresh" onclick="refreshAll()">🔄 刷新</button>
+  </div>
+</header>
+
+<!-- ============================================================
+     Main Content
+     ============================================================ -->
+<main class="main" id="mainContent">
+
+  <!-- ========== Dashboard ========== -->
+  <section class="page active" id="page-dashboard">
+    <h1 class="page-title">📋 首页看板</h1>
+    <p class="page-subtitle" id="dashboardSubtitle">加载中…</p>
+
+    <div class="cards-grid" id="alertCards"></div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-title">📊 项目概览</div>
+        <div id="projectOverview" style="font-size:13px;">加载中…</div>
+      </div>
+      <div class="card">
+        <div class="card-title">📅 关键时间线</div>
+        <div class="timeline" id="timeline">加载中…</div>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-title">⚡ 快捷操作</div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="switchPage('po-allocator')">📊 PO 工时规划</button>
+          <button class="btn btn-outline" onclick="switchPage('budget-updater')">📈 Budget 更新</button>
+          <button class="btn btn-outline" onclick="switchPage('travel-summary')">✈️ 差旅汇总</button>
+          <button class="btn btn-outline" onclick="switchPage('po-gr-status')">📋 PO/GR 状态</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">📁 最近输出</div>
+        <div id="recentOutputs" style="font-size:12px;">加载中…</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PO Allocator ========== -->
+  <section class="page" id="page-po-allocator">
+    <h1 class="page-title">📊 PO 工时规划</h1>
+    <p class="page-subtitle">基于 Level 配额的 PO 工时分配器 V2</p>
+    <div class="tool-panel">
+      <p style="font-size:13px; margin-bottom:12px;">
+        运行 PO 工时分配算法，从 Monthly Closing、Budget Report 和第三方工时 PDF 合并数据，
+        按 Level 配额自动分配每人每月在各 PO 上的天数。
+      </p>
+      <button class="btn btn-primary" onclick="runTool('po_allocator')" id="btn-po-allocator">
+        ▶ 运行 PO 分配器
+      </button>
+      <span id="spinner-po-allocator" style="display:none;"><span class="spinner"></span>运行中…</span>
+      <div class="tool-output" id="output-po-allocator"></div>
+    </div>
+  </section>
+
+  <!-- ========== Budget Updater ========== -->
+  <section class="page" id="page-budget-updater">
+    <h1 class="page-title">📈 Budget 月度更新</h1>
+    <p class="page-subtitle">从 Monthly Closing 汇总各项目工时 & 差旅</p>
+    <div class="tool-panel">
+      <p style="font-size:13px; margin-bottom:12px;">生成月度 Budget Summary（工时汇总 + 差旅汇总 + PO 状态 + 项目概览）。</p>
+      <button class="btn btn-primary" onclick="runTool('budget')" id="btn-budget">
+        ▶ 运行 Budget 更新器
+      </button>
+      <span id="spinner-budget" style="display:none;"><span class="spinner"></span>运行中…</span>
+      <div class="tool-output" id="output-budget"></div>
+    </div>
+  </section>
+
+  <!-- ========== Travel Summary ========== -->
+  <section class="page" id="page-travel-summary">
+    <h1 class="page-title">✈️ 差旅汇总</h1>
+    <p class="page-subtitle">解析 Hose & Tengqing 差旅数据</p>
+    <div class="tool-panel">
+      <p style="font-size:13px; margin-bottom:12px;">扫描所有月份差旅数据，按项目+人员+月度自动归类。</p>
+      <button class="btn btn-primary" onclick="runTool('travel')" id="btn-travel">
+        ▶ 运行差旅汇总
+      </button>
+      <span id="spinner-travel" style="display:none;"><span class="spinner"></span>运行中…</span>
+      <div class="tool-output" id="output-travel"></div>
+    </div>
+  </section>
+
+  <!-- ========== PO/GR Status ========== -->
+  <section class="page" id="page-po-gr-status">
+    <h1 class="page-title">📋 PO/GR 状态追踪</h1>
+    <p class="page-subtitle">记录与呈现分离 — 编辑状态会自动保存</p>
+    <div class="tool-panel">
+      <div style="display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
+        <select id="statusProjectFilter" onchange="renderPOGRStatus()" style="padding:6px 12px;border-radius:6px;border:1px solid var(--border);">
+          <option value="all">全部项目</option>
+        </select>
+        <select id="statusFilter" onchange="renderPOGRStatus()" style="padding:6px 12px;border-radius:6px;border:1px solid var(--border);">
+          <option value="all">全部状态</option>
+          <option value="pending">⏳ GR Pending</option>
+          <option value="done">✅ GR Done</option>
+        </select>
+      </div>
+      <div id="pogrTable" style="overflow-x:auto;">加载中…</div>
+    </div>
+  </section>
+
+  <!-- ========== Knowledge Base ========== -->
+  <section class="page" id="page-knowledge-base">
+    <h1 class="page-title">📚 知识库 & 模板</h1>
+    <p class="page-subtitle">可搜索的流程文档、FAQ、模板索引</p>
+    <div class="tool-panel">
+      <input type="text" id="kbSearch" placeholder="搜索知识库…" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:20px;font-size:13px;margin-bottom:16px;" oninput="searchKB()">
+      <div id="kbResults" style="font-size:13px; color:var(--text-secondary);">
+        输入关键词搜索知识库，或浏览下方目录。
+      </div>
+      <div class="cards-grid" id="kbCards" style="margin-top:16px;"></div>
+    </div>
+  </section>
+
+  <!-- ========== Tools ========== -->
+  <section class="page" id="page-tools">
+    <h1 class="page-title">🔧 小工具</h1>
+    <p class="page-subtitle">翻译、发票提交、B2B 账号等日常工具</p>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-title">🌐 快速翻译</div>
+        <textarea id="translateInput" rows="3" placeholder="输入要翻译的文字…" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:6px;font-size:13px;resize:vertical;"></textarea>
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <select id="translateDir" style="padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:12px;">
+            <option value="zh-en">中 → 英</option>
+            <option value="en-zh">英 → 中</option>
+            <option value="zh-de">中 → 德</option>
+            <option value="de-zh">德 → 中</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="doTranslate()">翻译</button>
+        </div>
+        <div id="translateOutput" style="margin-top:8px;padding:10px;background:var(--bg);border-radius:6px;font-size:13px;min-height:36px;display:none;"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">📧 常用链接</div>
+        <div style="font-size:13px; display:flex; flex-direction:column; gap:8px;">
+          <a href="#" onclick="switchPage('knowledge-base')" style="color:var(--primary);">📋 B2B 账号申请流程</a>
+          <a href="#" onclick="switchPage('knowledge-base')" style="color:var(--primary);">🧾 发票提交流程（用友）</a>
+          <a href="#" onclick="switchPage('knowledge-base')" style="color:var(--primary);">📁 验收材料清单模板</a>
+          <a href="#" onclick="switchPage('knowledge-base')" style="color:var(--primary);">✉️ 常用邮件模板</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">📊 外部链接</div>
+        <div style="font-size:13px; display:flex; flex-direction:column; gap:8px;">
+          <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=_qZESQ-LekSONc7F6Apc4JwfPlG6KdVOnHZIzLUNYeZUNVdNTVBBSUlSNTNBSUI4V0RMQThYMDZQRC4u" target="_blank" style="color:var(--primary);">📝 PO 信息录入表单 (MS Forms)</a>
+          <a href="#" style="color:var(--primary);">📈 PowerBI 看板</a>
+          <a href="#" style="color:var(--primary);">💬 AI 对话 (Claude)</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">📁 输出文件</div>
+        <div id="outputFileList" style="font-size:12px;">加载中…</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     Edit Modal
+     ============================================================ -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h3>编辑状态</h3>
+    <div style="font-size:13px; margin-bottom:12px;">
+      <strong id="editModalInfo"></strong>
+    </div>
+    <label style="font-size:12px;color:var(--text-secondary);">字段</label>
+    <select id="editField">
+      <option value="gr_status">GR Status</option>
+      <option value="invoice_status">Invoice Status</option>
+      <option value="gr_deadline">GR Deadline</option>
+      <option value="notes">Notes</option>
+    </select>
+    <label style="font-size:12px;color:var(--text-secondary);">新值</label>
+    <input type="text" id="editValue" placeholder="输入新值…">
+    <div class="modal-actions">
+      <button class="btn btn-outline btn-sm" onclick="closeModal()">取消</button>
+      <button class="btn btn-primary btn-sm" onclick="saveEdit()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ============================================================
+     JavaScript
+     ============================================================ -->
+<script>
+// ============================================================
+// State
+// ============================================================
+const API_BASE = 'http://localhost:8765';
+let appData = { projects: [], alerts: [], outputs: [] };
+let editContext = null;
+
+// ============================================================
+// Init
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  updateClock();
+  setInterval(updateClock, 30000);
+  initNavigation();
+  initSearch();
+  refreshAll();
+});
+
+function updateClock() {
+  const now = new Date();
+  document.getElementById('headerTime').textContent =
+    now.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric', weekday:'short' }) +
+    ' ' + now.toLocaleTimeString('zh-CN', { hour:'2-digit', minute:'2-digit' });
+}
+
+// ============================================================
+// Navigation
+// ============================================================
+function initNavigation() {
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => switchPage(item.dataset.page));
+  });
+}
+
+function switchPage(pageName) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+  const navItem = document.querySelector(`[data-page="${pageName}"]`);
+  if (navItem) navItem.classList.add('active');
+
+  const page = document.getElementById(`page-${pageName}`);
+  if (page) page.classList.add('active');
+
+  // Load page-specific data
+  if (pageName === 'dashboard') loadDashboard();
+  if (pageName === 'po-gr-status') renderPOGRStatus();
+  if (pageName === 'knowledge-base') loadKBOverview();
+  if (pageName === 'tools') loadOutputFiles();
+}
+
+// ============================================================
+// Data Loading
+// ============================================================
+async function refreshAll() {
+  await Promise.all([loadStatus(), loadAlerts(), loadOutputs()]);
+  loadDashboard();
+}
+
+async function apiGet(path) {
+  try {
+    const resp = await fetch(`${API_BASE}${path}`);
+    return await resp.json();
+  } catch (e) {
+    console.error(`API GET ${path} failed:`, e);
+    return null;
+  }
+}
+
+async function apiPost(path, body) {
+  try {
+    const resp = await fetch(`${API_BASE}${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    return await resp.json();
+  } catch (e) {
+    console.error(`API POST ${path} failed:`, e);
+    return { error: e.message };
+  }
+}
+
+async function loadStatus() {
+  const data = await apiGet('/api/status');
+  if (data && data.projects) appData.projects = data.projects;
+}
+
+async function loadAlerts() {
+  const data = await apiGet('/api/status/alerts');
+  if (data && data.alerts) appData.alerts = data.alerts;
+}
+
+async function loadOutputs() {
+  const data = await apiGet('/api/outputs');
+  if (data && data.outputs) appData.outputs = data.outputs;
+}
+
+// ============================================================
+// Dashboard
+// ============================================================
+function loadDashboard() {
+  const now = new Date();
+  document.getElementById('dashboardSubtitle').textContent =
+    `最后更新: ${now.toLocaleTimeString('zh-CN')} · ${appData.projects.length} 个项目 · ${appData.alerts.length} 个提醒`;
+
+  renderAlertCards();
+  renderProjectOverview();
+  renderTimeline();
+  renderRecentOutputs();
+}
+
+function renderAlertCards() {
+  const container = document.getElementById('alertCards');
+  const alerts = appData.alerts;
+
+  if (alerts.length === 0) {
+    container.innerHTML = `<div class="card"><div class="card-title"><span class="dot dot-success"></span>全部正常</div><p style="font-size:13px;color:var(--text-secondary);">所有 PO 状态正常，无逾期或即将到期的提醒。✅</p></div>`;
+    return;
+  }
+
+  const dangerAlerts = alerts.filter(a => a.level === 'danger');
+  const warningAlerts = alerts.filter(a => a.level === 'warning');
+
+  let html = '';
+  if (dangerAlerts.length > 0) {
+    html += `<div class="card">
+      <div class="card-title"><span class="dot dot-danger"></span>🔴 逾期提醒 (${dangerAlerts.length})</div>`;
+    dangerAlerts.forEach(a => {
+      html += `<div class="alert-item">
+        <span class="alert-level level-danger">OVERDUE</span>
+        <span class="alert-text">${a.message}<br><small>${a.project_name} · ${a.po_id.slice(-8)} · ¥${(a.amount_rmb||0).toLocaleString()}</small></span>
+        <span class="alert-project">${a.deadline||''}</span>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  if (warningAlerts.length > 0) {
+    html += `<div class="card">
+      <div class="card-title"><span class="dot dot-warning"></span>🟡 即将到期 (${warningAlerts.length})</div>`;
+    warningAlerts.forEach(a => {
+      html += `<div class="alert-item">
+        <span class="alert-level level-warning">DUE SOON</span>
+        <span class="alert-text">${a.message}<br><small>${a.project_name} · ${a.po_id.slice(-8)} · ¥${(a.amount_rmb||0).toLocaleString()}</small></span>
+        <span class="alert-project">${a.deadline||''}</span>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+function renderProjectOverview() {
+  const container = document.getElementById('projectOverview');
+  let html = '<table style="width:100%;font-size:13px;border-collapse:collapse;">';
+  html += '<tr style="border-bottom:1px solid var(--border);"><th style="text-align:left;padding:6px;">项目</th><th style="text-align:center;padding:6px;">PO 数</th><th style="text-align:center;padding:6px;">GR Pending</th><th style="text-align:center;padding:6px;">状态</th></tr>';
+
+  for (const proj of appData.projects) {
+    const pos = proj.pos || [];
+    const pendingGR = pos.filter(p => p.gr_status === 'pending').length;
+    const totalPOs = pos.length;
+    const statusIcon = pendingGR > 0 ? '🟡' : '✅';
+
+    html += `<tr style="border-bottom:1px solid var(--border);">
+      <td style="padding:6px;"><strong>${proj.project_code}</strong><br><small style="color:var(--text-secondary);">${proj.project_name||''}</small></td>
+      <td style="text-align:center;padding:6px;">${totalPOs}</td>
+      <td style="text-align:center;padding:6px;">${pendingGR > 0 ? `<span style="color:var(--warning);font-weight:600;">${pendingGR}</span>` : '0'}</td>
+      <td style="text-align:center;padding:6px;">${statusIcon}</td>
+    </tr>`;
+  }
+  html += '</table>';
+  container.innerHTML = html;
+}
+
+function renderTimeline() {
+  const container = document.getElementById('timeline');
+  const today = new Date();
+  const items = [];
+
+  for (const proj of appData.projects) {
+    for (const po of (proj.pos || [])) {
+      const deadline = po.gr_deadline;
+      if (!deadline || po.gr_status === 'done') continue;
+      try {
+        const d = new Date(deadline + 'T00:00:00');
+        const days = Math.ceil((d - today) / (1000*60*60*24));
+        items.push({
+          date: deadline,
+          label: `${proj.project_code} · ${po.po_id.slice(-8)}`,
+          days: days,
+          level: days < 0 ? 'tl-danger' : (days <= 30 ? 'tl-warning' : ''),
+        });
+      } catch(e) {}
+    }
+  }
+
+  items.sort((a,b) => a.days - b.days);
+
+  if (items.length === 0) {
+    container.innerHTML = '<div style="font-size:13px;color:var(--text-secondary);">暂无关键节点</div>';
+    return;
+  }
+
+  container.innerHTML = items.slice(0, 8).map(item => `
+    <div class="timeline-item ${item.level}">
+      <strong>${item.date}</strong> · ${item.label}
+      <div class="timeline-date">${item.days < 0 ? `逾期 ${-item.days} 天` : `还有 ${item.days} 天`}</div>
+    </div>
+  `).join('');
+}
+
+function renderRecentOutputs() {
+  const container = document.getElementById('recentOutputs');
+  if (appData.outputs.length === 0) {
+    container.innerHTML = '<span style="color:var(--text-secondary);">暂无输出文件</span>';
+    return;
+  }
+  container.innerHTML = appData.outputs.slice(0, 6).map(f =>
+    `<div style="padding:4px 0;border-bottom:1px solid var(--border);">
+      📄 ${f.name}<br><small style="color:var(--text-secondary);">${f.mtime} · ${(f.size/1024).toFixed(1)}KB</small>
+    </div>`
+  ).join('');
+}
+
+// ============================================================
+// Tool Runner
+// ============================================================
+async function runTool(tool) {
+  const btn = document.getElementById(`btn-${tool}`);
+  const spinner = document.getElementById(`spinner-${tool}`);
+  const output = document.getElementById(`output-${tool}`);
+
+  btn.disabled = true;
+  spinner.style.display = 'inline';
+  output.classList.remove('show');
+  output.textContent = '';
+
+  const result = await apiPost(`/api/run/${tool}`, {});
+
+  btn.disabled = false;
+  spinner.style.display = 'none';
+
+  if (result) {
+    output.textContent = result.stdout || result.stderr || JSON.stringify(result, null, 2);
+    output.classList.add('show');
+    if (result.ok) {
+      showToast('success', `${tool} 运行完成！`);
+      loadOutputs();
+    } else {
+      showToast('error', `${tool} 运行出错 (code: ${result.returncode})`);
+    }
+  } else {
+    output.textContent = '[错误] API 服务器未响应。请确认 api_server.py 正在运行。';
+    output.classList.add('show');
+    showToast('error', 'API 服务器未响应');
+  }
+}
+
+// ============================================================
+// PO/GR Status
+// ============================================================
+function renderPOGRStatus() {
+  const container = document.getElementById('pogrTable');
+  const projectFilter = document.getElementById('statusProjectFilter').value;
+  const statusFilter = document.getElementById('statusFilter').value;
+
+  // Build project filter options
+  const filterSelect = document.getElementById('statusProjectFilter');
+  filterSelect.innerHTML = '<option value="all">全部项目</option>' +
+    appData.projects.map(p => `<option value="${p.project_code}">${p.project_code} - ${p.project_name||''}</option>`).join('');
+
+  let projects = appData.projects;
+  if (projectFilter !== 'all') {
+    projects = projects.filter(p => p.project_code === projectFilter);
+  }
+
+  let allPOs = [];
+  for (const proj of projects) {
+    for (const po of (proj.pos || [])) {
+      if (statusFilter !== 'all' && po.gr_status !== statusFilter) continue;
+      allPOs.push({ ...po, project_code: proj.project_code, project_name: proj.project_name });
+    }
+  }
+
+  if (allPOs.length === 0) {
+    container.innerHTML = '<p style="color:var(--text-secondary);font-size:13px;">没有匹配的 PO 记录。</p>';
+    return;
+  }
+
+  let html = `<table class="data-table"><thead><tr>
+    <th>项目</th><th>PO ID</th><th>金额</th><th>GR 状态</th><th>GR 截止</th><th>发票状态</th><th>备注</th><th>操作</th>
+  </tr></thead><tbody>`;
+
+  for (const po of allPOs) {
+    const grIcon = po.gr_status === 'done' ? '✅' : (po.gr_status === 'pending' ? '⏳' : '—');
+    const invIcon = po.invoice_status === 'done' ? '✅' : (po.invoice_status === 'pending' ? '📝' : '—');
+    const deadline = po.gr_deadline || '';
+    const isOverdue = deadline && po.gr_status === 'pending' && new Date(deadline) < new Date();
+
+    html += `<tr>
+      <td><strong>${po.project_code}</strong><br><small>${po.project_name||''}</small></td>
+      <td>${po.po_id}</td>
+      <td>${po.amount_rmb ? '¥' + po.amount_rmb.toLocaleString() : '—'}</td>
+      <td><span class="editable" onclick="openEdit('${po.project_code}','${po.po_id}','gr_status','${po.gr_status||''}')">${grIcon} ${po.gr_status||'?'}</span></td>
+      <td style="${isOverdue ? 'color:var(--danger);font-weight:600;' : ''}">
+        <span class="editable" onclick="openEdit('${po.project_code}','${po.po_id}','gr_deadline','${deadline}')">${deadline || '未设置'}</span>
+      </td>
+      <td><span class="editable" onclick="openEdit('${po.project_code}','${po.po_id}','invoice_status','${po.invoice_status||''}')">${invIcon} ${po.invoice_status||'?'}</span></td>
+      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${po.notes||''}">${po.notes||''}</td>
+      <td><button class="btn btn-outline btn-sm" onclick="openEdit('${po.project_code}','${po.po_id}','gr_status','${po.gr_status||''}')">编辑</button></td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+function openEdit(project, poId, field, currentValue) {
+  editContext = { project, poId, field };
+  document.getElementById('editModalInfo').textContent = `${project} · ${poId} · ${field}`;
+  document.getElementById('editField').value = field;
+  document.getElementById('editValue').value = currentValue || '';
+  document.getElementById('editModal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('editModal').classList.remove('show');
+  editContext = null;
+}
+
+async function saveEdit() {
+  if (!editContext) return;
+  const field = document.getElementById('editField').value;
+  const value = document.getElementById('editValue').value;
+
+  const result = await apiPost('/api/status/update', {
+    project: editContext.project,
+    po_id: editContext.poId,
+    field: field,
+    value: value,
+  });
+
+  closeModal();
+  if (result && result.ok) {
+    showToast('success', `已更新: ${field} = ${value}`);
+    await refreshAll();
+    renderPOGRStatus();
+  } else {
+    showToast('error', `更新失败: ${result?.error || '未知错误'}`);
+  }
+}
+
+// ============================================================
+// Knowledge Base
+// ============================================================
+async function searchKB() {
+  const query = document.getElementById('kbSearch').value.trim();
+  const resultsDiv = document.getElementById('kbResults');
+  const cardsDiv = document.getElementById('kbCards');
+
+  if (!query) {
+    resultsDiv.innerHTML = '输入关键词搜索知识库，或浏览下方目录。';
+    cardsDiv.innerHTML = '';
+    loadKBOverview();
+    return;
+  }
+
+  const data = await apiGet(`/api/knowledge/search?q=${encodeURIComponent(query)}`);
+  if (!data || !data.results || data.results.length === 0) {
+    resultsDiv.innerHTML = '未找到匹配结果。';
+    cardsDiv.innerHTML = '';
+    return;
+  }
+
+  resultsDiv.innerHTML = `找到 ${data.results.length} 个结果:`;
+  cardsDiv.innerHTML = data.results.map(r => `
+    <div class="card kb-card">
+      <h4>📄 ${r.title}</h4>
+      <p style="font-size:11px;color:var(--text-secondary);">${r.file}</p>
+      <p style="font-size:12px;margin-top:4px;">…${escapeHtml(r.snippet)}…</p>
+    </div>
+  `).join('');
+}
+
+function loadKBOverview() {
+  // Display static knowledge base overview
+  const cardsDiv = document.getElementById('kbCards');
+  cardsDiv.innerHTML = `
+    <div class="card kb-card">
+      <h4>📋 PO / WBS / 项目号对应关系</h4>
+      <p>WBS element → 项目名映射表，包含 15 个项目号的前缀匹配规则。</p>
+    </div>
+    <div class="card kb-card">
+      <h4>🧾 差旅报销流程</h4>
+      <p>从合思/用友平台下载对账单到提交报销的完整流程。</p>
+    </div>
+    <div class="card kb-card">
+      <h4>🔑 B2B 账号申请流程</h4>
+      <p>为项目员工创建客户端账号的步骤清单和所需材料。</p>
+    </div>
+    <div class="card kb-card">
+      <h4>📄 发票提交流程（用友）</h4>
+      <p>供应商发票上传用友平台的完整操作步骤。</p>
+    </div>
+    <div class="card kb-card">
+      <h4>📨 PO 接收 → 录入 → 通知流程</h4>
+      <p>从 Outlook 收到客户 PO 到录入 PO_Record 并通知相关人员的完整流程。</p>
+    </div>
+    <div class="card kb-card">
+      <h4>✅ 季度验收全流程</h4>
+      <p>客户验收 + 供应商验收的完整 check list 和时间节点。</p>
+    </div>
+  `;
+}
+
+function loadOutputFiles() {
+  const container = document.getElementById('outputFileList');
+  if (appData.outputs.length === 0) {
+    container.innerHTML = '<span style="color:var(--text-secondary);">暂无输出文件</span>';
+    return;
+  }
+  container.innerHTML = appData.outputs.slice(0, 10).map(f =>
+    `<div style="padding:3px 0;">📄 ${f.name} <small style="color:var(--text-secondary);">${f.mtime}</small></div>`
+  ).join('');
+}
+
+// ============================================================
+// Search
+// ============================================================
+function initSearch() {
+  const input = document.getElementById('searchInput');
+  const results = document.getElementById('searchResults');
+  let timer;
+
+  input.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => doSearch(input.value.trim()), 250);
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') results.classList.remove('show');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-box')) results.classList.remove('show');
+  });
+}
+
+function doSearch(query) {
+  const results = document.getElementById('searchResults');
+  if (!query || query.length < 2) {
+    results.classList.remove('show');
+    return;
+  }
+
+  const q = query.toLowerCase();
+  const items = [];
+
+  // Search projects
+  for (const proj of appData.projects) {
+    if (proj.project_code.toLowerCase().includes(q) || (proj.project_name||'').toLowerCase().includes(q)) {
+      items.push({ type: 'project', text: `${proj.project_code} — ${proj.project_name||''}`, tag: '项目', tagClass: 'tag-project', action: () => {} });
+    }
+    for (const po of (proj.pos || [])) {
+      if (po.po_id.toLowerCase().includes(q)) {
+        items.push({ type: 'po', text: `${po.po_id} · ${proj.project_code}`, tag: 'PO', tagClass: 'tag-po', action: () => switchPage('po-gr-status') });
+      }
+    }
+  }
+
+  // Search knowledge base (synchronous for speed — load from known list)
+  const kbTopics = [
+    'PO / WBS / 项目号对应关系', '差旅报销流程', 'B2B 账号申请流程',
+    '发票提交流程', 'PO 接收录入流程', '季度验收全流程',
+    '分包商采购', '验收材料清单', '常用邮件模板'
+  ];
+  for (const topic of kbTopics) {
+    if (topic.toLowerCase().includes(q)) {
+      items.push({ type: 'doc', text: topic, tag: '文档', tagClass: 'tag-doc', action: () => switchPage('knowledge-base') });
+    }
+  }
+
+  if (items.length === 0) {
+    results.innerHTML = '<div class="search-result-item" style="color:var(--text-secondary);">未找到匹配结果</div>';
+  } else {
+    results.innerHTML = items.slice(0, 10).map(item => `
+      <div class="search-result-item" onclick="${item.action ? 'item.action()' : ''};document.getElementById('searchResults').classList.remove('show');">
+        <span class="tag ${item.tagClass}">${item.tag}</span> ${escapeHtml(item.text)}
+      </div>
+    `).join('');
+  }
+  results.classList.add('show');
+}
+
+// ============================================================
+// Translate
+// ============================================================
+async function doTranslate() {
+  const input = document.getElementById('translateInput').value.trim();
+  const direction = document.getElementById('translateDir').value;
+  const output = document.getElementById('translateOutput');
+
+  if (!input) { output.style.display = 'none'; return; }
+
+  const result = await apiPost('/api/translate', { text: input, direction });
+  output.style.display = 'block';
+  if (result && result.output) {
+    output.textContent = result.output;
+  } else {
+    output.textContent = '[翻译服务暂未配置。后续可接入 AI API 实现中德/中英翻译。]';
+  }
+}
+
+// ============================================================
+// Utilities
+// ============================================================
+function showToast(type, message) {
+  const toast = document.getElementById('toast');
+  toast.className = `toast toast-${type} show`;
+  toast.textContent = message;
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// Close modal on overlay click
+document.getElementById('editModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+
+</body>
+</html>
