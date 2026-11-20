@@ -284,12 +284,134 @@ body {
   position: fixed; bottom: 24px; right: 24px; z-index: 300;
   padding: 12px 20px; border-radius: 8px; color: #fff; font-size: 13px;
   box-shadow: 0 4px 12px rgba(0,0,0,.2); animation: slideUp .3s ease;
-  display: none;
+  display: none; white-space: pre-line; max-width: min(90vw, 900px); overflow-wrap: anywhere;
 }
 .toast.show { display: block; }
 .toast-success { background: var(--success); }
 .toast-error { background: var(--danger); }
+.toast-warning { background: var(--warning); }
+.toast-info { background: var(--info); }
 @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* Step panels */
+.step-panel { margin-bottom:16px; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+.step-panel-header { background:var(--bg); padding:14px 20px; cursor:pointer; display:flex; align-items:center; gap:10px; font-weight:600; font-size:14px; transition:var(--transition); }
+.step-panel-header:hover { background:var(--primary-light); }
+.step-panel-header .step-num { display:inline-flex; width:28px; height:28px; border-radius:50%; background:var(--primary); color:#fff; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
+.step-panel-header .step-arrow { margin-left:auto; transition:transform .2s; font-size:12px; color:var(--text-secondary); }
+.step-panel.open .step-arrow { transform:rotate(90deg); }
+.step-panel-body { padding:20px; display:none; }
+.step-panel.open .step-panel-body { display:block; }
+
+/* Form elements */
+.form-row { display:flex; gap:12px; align-items:flex-end; margin-bottom:12px; flex-wrap:wrap; }
+.form-group { display:flex; flex-direction:column; gap:4px; }
+.form-group label { font-size:11px; color:var(--text-secondary); font-weight:500; text-transform:uppercase; letter-spacing:.3px; }
+.form-group input, .form-group select { padding:7px 10px; border:1px solid var(--border); border-radius:6px; font-size:13px; outline:none; min-width:120px; }
+.form-group input:focus, .form-group select:focus { border-color:var(--primary); box-shadow:0 0 0 2px rgba(47,84,150,.15); }
+
+/* Mode / Dept tabs */
+.mode-tabs { display:flex; gap:0; margin-bottom:16px; border-radius:6px; overflow:hidden; border:1px solid var(--border); width:fit-content; }
+.mode-tab { padding:7px 18px; cursor:pointer; font-size:12px; background:var(--bg); border:none; transition:var(--transition); }
+.mode-tab.active { background:var(--primary); color:#fff; }
+.dept-tabs { display:flex; gap:4px; margin-bottom:16px; flex-wrap:wrap; }
+.dept-tab { padding:6px 16px; cursor:pointer; font-size:12px; font-weight:500; background:var(--bg); border:1px solid var(--border); border-radius:20px; transition:var(--transition); }
+.dept-tab:hover { border-color:var(--primary); }
+.dept-tab.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+
+/* File upload */
+.file-upload { position:relative; display:inline-block; }
+.file-upload input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; }
+.file-upload-label { display:inline-flex; align-items:center; gap:6px; padding:7px 16px; background:var(--bg); border:1px dashed var(--border); border-radius:6px; font-size:12px; color:var(--text-secondary); cursor:pointer; transition:var(--transition); }
+.file-upload-label:hover { border-color:var(--primary); color:var(--primary); }
+.file-name { font-size:12px; color:var(--success); margin-left:8px; }
+
+/* Progress bar */
+.progress-bar { height:8px; background:var(--border); border-radius:4px; overflow:hidden; min-width:60px; }
+.progress-fill { height:100%; border-radius:4px; transition:width .3s; }
+.progress-fill.high { background:linear-gradient(90deg, #f39c12, #e74c3c); }
+.progress-fill.mid { background:linear-gradient(90deg, #27ae60, #f39c12); }
+.progress-fill.low { background:linear-gradient(90deg, #27ae60, #2ecc71); }
+
+/* KPI cards */
+.kpi-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:12px; margin-bottom:20px; }
+.kpi-card { background:var(--bg); border-radius:var(--radius); padding:16px; text-align:center; border:1px solid var(--border); }
+.kpi-card .kpi-value { font-size:24px; font-weight:700; color:var(--primary); }
+.kpi-card .kpi-label { font-size:11px; color:var(--text-secondary); margin-top:4px; }
+
+/* Level row in PO form */
+.level-row { display:flex; gap:8px; align-items:center; margin-bottom:8px; padding:8px; background:var(--bg); border-radius:6px; flex-wrap:wrap; }
+.level-row select, .level-row input { padding:6px 8px; border:1px solid var(--border); border-radius:4px; font-size:12px; }
+.level-row .level-amount { min-width:80px; text-align:right; color:var(--text-secondary); font-size:12px; }
+
+/* Timesheet review cards: fixed field rhythm makes each row easy to scan. */
+.review-grid-head, .review-card {
+  display:grid;
+  grid-template-columns:72px minmax(180px,1.2fr) minmax(180px,1fr) minmax(205px,1.35fr) minmax(125px,.8fr) minmax(135px,.85fr) 82px;
+  gap:10px;
+  align-items:center;
+}
+.review-grid-head {
+  padding:8px 10px;
+  background:#eef2f8;
+  color:#23395d;
+  font-size:12px;
+  font-weight:700;
+  border:1px solid #dce3ef;
+  border-radius:7px 7px 0 0;
+}
+.review-card {
+  padding:10px;
+  border:1px solid #e1e6ef;
+  border-top:0;
+  background:#fff;
+  min-width:1040px;
+}
+.review-card:hover { background:#fbfcff; box-shadow:0 2px 8px rgba(47,84,150,.08); }
+.review-id { color:#2f5496; font-size:11px; font-family:Consolas,monospace; }
+.review-source-name { font-size:12px; font-weight:600; color:#26364f; }
+.review-source-file { margin-top:4px; color:#7b8799; font-size:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.review-source-actions { display:flex; gap:5px; margin-top:6px; }
+.review-source-actions a, .review-source-actions button { border:0; background:#eef3fa; color:#2f5496; border-radius:4px; padding:3px 6px; font-size:10px; cursor:pointer; text-decoration:none; }
+.review-source-actions a:hover, .review-source-actions button:hover { background:#dce7f6; }
+.review-source-missing { color:#a33b34; font-size:10px; font-weight:600; align-self:center; }
+.review-method { display:inline-block; padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700; background:#e8f1fb; color:#24558d; }
+.review-method.ocr { background:#fff0d6; color:#8a5a00; }
+.review-issues { margin-top:6px; display:flex; gap:4px; flex-wrap:wrap; }
+.review-badge { display:inline-block; padding:2px 6px; border-radius:9px; font-size:10px; font-weight:600; }
+.review-badge-blocking { background:#fbd8d5; color:#9b2c26; }
+.review-badge-warning { background:#fff0c7; color:#806000; }
+.review-badge-info { background:#e4f0e7; color:#2f6b3b; }
+.review-field { display:grid; grid-template-columns:1fr; gap:4px; }
+.review-field label { color:#7b8799; font-size:10px; line-height:1; }
+.review-field input, .review-field select { box-sizing:border-box; width:100% !important; min-height:28px; padding:4px 7px; border:1px solid #cbd4e2; border-radius:5px; background:#fff; color:#26364f; font-size:12px; }
+.review-field input:focus, .review-field select:focus { outline:2px solid rgba(47,84,150,.18); border-color:#2f5496; }
+.review-action { text-align:center; display:flex; flex-direction:column; align-items:center; gap:6px; }
+.review-action .btn { width:72px; height:34px; min-height:34px; padding:0 8px; display:inline-flex; align-items:center; justify-content:center; text-align:center; line-height:1; white-space:nowrap; }
+.review-delete-btn { width:72px; min-height:28px; padding:4px 5px; border:1px solid #e6a6a1; border-radius:5px; background:#fff7f6; color:#a33b34; font-size:11px; cursor:pointer; text-align:center; }
+.review-delete-btn:hover { background:#fbe2df; }
+.review-scope-note { padding:7px 10px; margin:0 0 10px; color:#52627a; background:#f7f9fc; border-left:3px solid #2f5496; border-radius:4px; font-size:12px; }
+.review-batch-panel { margin-top:18px; padding-top:18px; border-top:1px solid var(--border); }
+.review-batch-toolbar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:10px 0; }
+.review-batch-toolbar select { padding:6px 9px; border:1px solid var(--border); border-radius:6px; font-size:12px; }
+.review-batch-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(165px, 1fr)); gap:8px; margin:10px 0 14px; }
+.review-batch-card { padding:11px; border:1px solid var(--border); border-radius:7px; background:#fbfcff; cursor:pointer; }
+.review-batch-card:hover { border-color:var(--primary); background:var(--primary-light); }
+.review-batch-card.blocking { border-left:3px solid var(--danger); }
+.review-batch-card .batch-count { font-size:22px; font-weight:700; color:var(--primary); }
+.review-batch-card .batch-label { font-size:12px; font-weight:600; }
+.review-batch-card .batch-desc { margin-top:4px; color:var(--text-secondary); font-size:10px; line-height:1.4; }
+.historical-review-table { min-width:780px; }
+.historical-review-table td { vertical-align:top; font-size:12px; }
+.historical-review-table small { color:var(--text-secondary); }
+.review-readonly-note { padding:8px 10px; color:#6b4e00; background:#fff8df; border-left:3px solid var(--warning); border-radius:4px; font-size:12px; }
+@media (max-width: 1100px) {
+  .review-grid-head { display:none; }
+  .review-card { min-width:0; grid-template-columns:1fr 1fr; align-items:start; border-top:1px solid #e1e6ef; border-radius:7px; margin-bottom:8px; }
+  .review-id { grid-column:1 / -1; }
+  .review-source, .review-issues { grid-column:1 / -1; }
+  .review-action { grid-column:1 / -1; text-align:right; }
+}
 </style>
 </head>
 <body>
@@ -304,9 +426,10 @@ body {
   </div>
   <nav class="sidebar-nav">
     <div class="nav-item active" data-page="dashboard"><span class="icon">🏠</span>首页看板</div>
-    <div class="nav-item" data-page="po-allocator"><span class="icon">📊</span>PO 工时规划</div>
-    <div class="nav-item" data-page="budget-updater"><span class="icon">📈</span>Budget 月度更新</div>
+    <div class="nav-item" data-page="timesheet-review"><span class="icon">🧾</span>工时审核中心</div>
+        <div class="nav-item" data-page="budget-report"><span class="icon">📈</span>预算报告</div>
     <div class="nav-item" data-page="travel-summary"><span class="icon">✈️</span>差旅汇总</div>
+    <div class="nav-item" data-page="wp-merge"><span class="icon">🗂️</span>GR WP 合并</div>
     <div class="nav-divider"></div>
     <div class="nav-item" data-page="po-gr-status"><span class="icon">📋</span>PO/GR 状态追踪</div>
     <div class="nav-item" data-page="knowledge-base"><span class="icon">📚</span>知识库 & 模板</div>
@@ -358,8 +481,7 @@ body {
       <div class="card">
         <div class="card-title">⚡ 快捷操作</div>
         <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <button class="btn btn-primary" onclick="switchPage('po-allocator')">📊 PO 工时规划</button>
-          <button class="btn btn-outline" onclick="switchPage('budget-updater')">📈 Budget 更新</button>
+          <button class="btn btn-primary" onclick="switchPage('budget-report')">📈 预算报告</button>
           <button class="btn btn-outline" onclick="switchPage('travel-summary')">✈️ 差旅汇总</button>
           <button class="btn btn-outline" onclick="switchPage('po-gr-status')">📋 PO/GR 状态</button>
         </div>
@@ -371,34 +493,230 @@ body {
     </div>
   </section>
 
-  <!-- ========== PO Allocator ========== -->
-  <section class="page" id="page-po-allocator">
-    <h1 class="page-title">📊 PO 工时规划</h1>
-    <p class="page-subtitle">基于 Level 配额的 PO 工时分配器 V2</p>
+  <!-- ========== Timesheet Review ========== -->
+  <section class="page" id="page-timesheet-review">
+    <h1 class="page-title">🧾 工时审核中心</h1>
+    <p class="page-subtitle">PDF/OCR 候选必须确认后才进入正式工时事实；人员、Level 和客户日费率会从最新 PO Usage Status 与费率表自动预选，也可用下拉菜单调整。</p>
     <div class="tool-panel">
-      <p style="font-size:13px; margin-bottom:12px;">
-        运行 PO 工时分配算法，从 Monthly Closing、Budget Report 和第三方工时 PDF 合并数据，
-        按 Level 配额自动分配每人每月在各 PO 上的天数。
-      </p>
-      <button class="btn btn-primary" onclick="runTool('po_allocator')" id="btn-po-allocator">
-        ▶ 运行 PO 分配器
-      </button>
-      <span id="spinner-po-allocator" style="display:none;"><span class="spinner"></span>运行中…</span>
-      <div class="tool-output" id="output-po-allocator"></div>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">
+        <button class="btn btn-outline btn-sm" onclick="runStep2Reconcile()">Step 2 PO / Monthly Closing 核查</button>
+        <span id="step2AuditStatus" style="font-size:12px;color:var(--text-secondary);"></span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap;">
+        <select id="reviewProject" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;">
+          <option value="CNTS-25165">CNTS-25165</option>
+        </select>
+        <button class="btn btn-outline btn-sm" onclick="scanTimesheets()">🔍 扫描 PDF</button>
+        <button class="btn btn-outline btn-sm" id="btn-timesheet-ocr" onclick="runTimesheetOCR()">🔤 补做/重做 OCR</button>
+        <button class="btn btn-outline btn-sm" onclick="loadTimesheetReview()">🔄 刷新审核队列</button>
+        <button class="btn btn-primary btn-sm" onclick="bulkApproveTimesheets()">✅ 一键确认已匹配</button>
+        <span id="timesheetOcrStatus" style="font-size:12px;color:var(--text-secondary);"></span>
+        <span id="reviewCount" style="font-size:12px;color:var(--text-secondary);"></span>
+      </div>
+      <div id="reviewScopeNote" class="review-scope-note">审核范围加载中…</div>
+      <div id="timesheetReviewTable" style="overflow-x:auto;">点击刷新审核队列。</div>
+      <div class="review-batch-panel">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+          <div>
+            <h3 style="font-size:15px;margin-bottom:3px;">历史工时 / PO 批次复核</h3>
+            <div style="font-size:12px;color:var(--text-secondary);">只读查看历史候选及其 PO 关联状态；不会直接写入正式工时事实。</div>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="loadHistoricalBatches()">加载历史批次</button>
+        </div>
+        <div class="review-batch-toolbar">
+          <label style="font-size:12px;color:var(--text-secondary);">批次</label>
+          <select id="historicalBatchFilter" onchange="loadHistoricalBatches()">
+            <option value="">全部历史批次</option>
+          </select>
+          <label style="font-size:12px;color:var(--text-secondary);">期间</label>
+          <input id="historicalPeriodFilter" placeholder="YYYY-MM" style="padding:6px 9px;border:1px solid var(--border);border-radius:6px;font-size:12px;width:90px;">
+          <button class="btn btn-outline btn-sm" onclick="loadHistoricalBatches()">筛选</button>
+        </div>
+        <div id="historicalBatchNote" class="review-readonly-note">点击“加载历史批次”查看待复核数量。</div>
+        <div id="historicalBatchSummary" class="review-batch-grid"></div>
+        <div id="historicalBatchItems" style="overflow-x:auto;"></div>
+      </div>
     </div>
   </section>
 
-  <!-- ========== Budget Updater ========== -->
-  <section class="page" id="page-budget-updater">
-    <h1 class="page-title">📈 Budget 月度更新</h1>
-    <p class="page-subtitle">从 Monthly Closing 汇总各项目工时 & 差旅</p>
+  <!-- ========== Budget Report ========== -->
+  <section class="page" id="page-budget-report">
+    <h1 class="page-title">📈 预算报告</h1>
+    <p class="page-subtitle">预算季度更新 · 预算月度更新 · 部门看板</p>
+
+    <!-- ====== Section 1: 预算季度更新 ====== -->
+    <div class="tool-panel" style="margin-bottom:20px;">
+      <h3 style="margin-bottom:4px;">▶ 预算季度更新</h3>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">输入新PO → 读取工时清单表 → 正向推演 → 回写 Budget Report</p>
+
+      <!-- Step 1 -->
+      <div class="step-panel" id="step1">
+        <div class="step-panel-header" onclick="toggleStep('step1')">
+          <span class="step-num">1</span>选择项目
+          <span class="step-arrow">▶</span>
+        </div>
+        <div class="step-panel-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>项目号</label>
+              <select id="budgetProject" onchange="onProjectChange()" style="min-width:200px;">
+                <option value="">加载中...</option>
+              </select>
+            </div>
+            <div id="projectInfo" style="font-size:12px;color:var(--text-secondary);"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-panel" id="step2">
+        <div class="step-panel-header" onclick="toggleStep('step2')">
+          <span class="step-num">2</span>输入新 PO
+          <span class="step-arrow">▶</span>
+        </div>
+        <div class="step-panel-body">
+          <div class="mode-tabs">
+            <button class="mode-tab active" onclick="switchPOInputMode('manual', this)">✍️ 手动输入</button>
+            <button class="mode-tab" onclick="switchPOInputMode('pdf', this)">📄 上传 PO PDF 识别</button>
+          </div>
+
+          <!-- 手动输入模式 -->
+          <div id="poManualInput">
+            <div class="form-row">
+              <div class="form-group">
+                <label>PO ID</label>
+                <input type="text" id="poIdInput" placeholder="例: 2601000337">
+              </div>
+              <div class="form-group">
+                <label>优先级</label>
+                <input type="number" id="poPriorityInput" value="1" min="1" max="9" style="width:70px;">
+              </div>
+              <div class="form-group">
+                <label>起始月</label>
+                <input type="text" id="poStartInput" placeholder="2026-08" style="width:100px;">
+              </div>
+              <div class="form-group">
+                <label>结束月</label>
+                <input type="text" id="poEndInput" placeholder="2026-12" style="width:100px;">
+              </div>
+            </div>
+            <div class="form-row" style="margin-bottom:16px;">
+              <span style="font-size:12px;color:var(--text-secondary);">使用模式:</span>
+              <label style="font-size:13px;cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="allocMode" value="usage" checked onchange="onAllocModeChange()"> 按实际使用推演</label>
+              <label style="font-size:13px;cursor:pointer;display:flex;align-items:center;gap:4px;"><input type="radio" name="allocMode" value="quarterly" onchange="onAllocModeChange()"> 按季度分配</label>
+            </div>
+            <div id="levelRows">
+              <div class="level-row" id="levelRow0">
+                <select class="level-select" style="min-width:180px;"><option value="">加载 Level...</option></select>
+                <input type="number" class="level-days" placeholder="天数" min="1" style="width:80px;" oninput="updateLevelAmount(this)">
+                <input type="number" class="level-price" placeholder="单价" min="0" style="width:90px;" oninput="updateLevelAmount(this)">
+                <span class="level-amount">¥0</span>
+                <button class="btn btn-outline btn-sm" onclick="removeLevelRow(this)" title="删除">×</button>
+              </div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="addLevelRow()" style="margin-top:8px;">+ 添加 Level</button>
+            <div style="margin-top:12px;">
+              <button class="btn btn-primary" onclick="savePOConfig()" id="btn-save-po">💾 保存 PO 配置</button>
+              <span id="spinner-save-po" style="display:none;margin-left:8px;"><span class="spinner"></span>保存中...</span>
+            </div>
+          </div>
+
+          <!-- PDF 上传模式 -->
+          <div id="poPdfInput" style="display:none;">
+            <div class="form-row">
+              <div class="file-upload">
+                <input type="file" id="poPdfFile" accept=".pdf" onchange="uploadPOFile(this)">
+                <span class="file-upload-label">📂 选择 PO PDF 文件</span>
+              </div>
+              <span id="pdfFileName" class="file-name"></span>
+              <span id="spinner-pdf-parse" style="display:none;"><span class="spinner"></span>识别中...</span>
+            </div>
+            <div id="pdfParseResult" style="display:none;margin-top:12px;padding:12px;background:var(--bg);border-radius:8px;font-size:13px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-panel" id="step3">
+        <div class="step-panel-header" onclick="toggleStep('step3')">
+          <span class="step-num">3</span>数据源状态
+          <span class="step-arrow">▶</span>
+        </div>
+        <div class="step-panel-body">
+          <button class="btn btn-outline btn-sm" onclick="scanDataSources()" id="btn-scan-ds">🔍 扫描数据源</button>
+          <span id="spinner-scan-ds" style="display:none;margin-left:8px;"><span class="spinner"></span>扫描中...</span>
+          <div id="dsResults" style="margin-top:12px;font-size:12px;"></div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-panel" id="step4">
+        <div class="step-panel-header" onclick="toggleStep('step4')">
+          <span class="step-num">4</span>推演 &amp; 回写
+          <span class="step-arrow">▶</span>
+        </div>
+        <div class="step-panel-body">
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+            <button class="btn btn-outline" onclick="budgetPreview()" id="btn-budget-preview">🔍 预览差异</button>
+            <button class="btn btn-success" onclick="budgetWrite()" id="btn-budget-write">✏️ 回写 Budget Report</button>
+            <span id="spinner-budget-wb" style="display:none;"><span class="spinner"></span>处理中...</span>
+          </div>
+          <div id="budget-diff-summary" style="display:none;margin-top:12px;padding:12px;background:var(--bg);border-radius:8px;font-size:13px;white-space:pre-wrap;font-family:monospace;max-height:300px;overflow:auto;"></div>
+          <div class="tool-output" id="output-budget-wb"></div>
+          <div style="margin-top:12px;">
+            <button class="btn btn-primary btn-sm" onclick="generateWorkingUsageStatus()" id="btn-working-usage-status">生成公式保留 Working 版</button>
+            <span id="spinner-working-usage-status" style="display:none;margin-left:8px;"><span class="spinner"></span>生成中...</span>
+            <button class="btn btn-outline btn-sm" onclick="generateUsageStatus()" id="btn-usage-status" style="display:none;">📄 生成 PO Usage Status</button>
+            <span id="spinner-usage-status" style="display:none;margin-left:8px;"><span class="spinner"></span>生成中...</span>
+          </div>
+          <div class="tool-output" id="output-usage-status"></div>
+          <div class="tool-output" id="output-working-usage-status"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Section 2: 预算月度更新 ====== -->
+    <div class="tool-panel" style="margin-bottom:20px;">
+      <h3 style="margin-bottom:4px;">▶ 预算月度更新</h3>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">读取 Monthly Closing、已审核三方工时和差旅数据 → 回写 Budget Report Actual 区域</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>项目号</label>
+          <select id="monthlyProject" onchange="updateMonthlyUsageStatusButton()" style="min-width:200px;"><option value="">加载中...</option></select>
+        </div>
+        <div class="form-group">
+          <label>目标月份</label>
+          <input type="text" id="monthlyMonth" placeholder="202607" style="width:90px;">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="runMonthlyWrite()" id="btn-monthly-write">▶ 预览 &amp; 回写</button>
+        <span id="spinner-monthly-write" style="display:none;"><span class="spinner"></span>处理中...</span>
+        <button class="btn btn-outline btn-sm" onclick="updateMonthlyUsageStatus()" id="btn-monthly-usage-status" style="display:none;">更新 PO Usage Status</button>
+        <span id="spinner-monthly-usage-status" style="display:none;"><span class="spinner"></span>更新中...</span>
+      </div>
+      <div class="tool-output" id="output-monthly-write"></div>
+      <div class="tool-output" id="output-monthly-usage-status"></div>
+      <p style="font-size:12px;color:var(--text-secondary);margin-top:8px;">CNTS-25165 月度回写完成后，可单独更新 PO Usage Status；此操作只生成状态表新版本，不修改 Budget Report。</p>
+    </div>
+
+    <!-- ====== Section 3: 部门看板 ====== -->
     <div class="tool-panel">
-      <p style="font-size:13px; margin-bottom:12px;">生成月度 Budget Summary（工时汇总 + 差旅汇总 + PO 状态 + 项目概览）。</p>
-      <button class="btn btn-primary" onclick="runTool('budget')" id="btn-budget">
-        ▶ 运行 Budget 更新器
-      </button>
-      <span id="spinner-budget" style="display:none;"><span class="spinner"></span>运行中…</span>
-      <div class="tool-output" id="output-budget"></div>
+      <h3 style="margin-bottom:4px;">▶ 部门预算看板</h3>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">按部门层级查看各项目工时、差旅、PO 状态</p>
+      <div class="dept-tabs" id="deptTabs">
+        <button class="dept-tab active" onclick="loadDeptDashboard('TV', this)">TV</button>
+        <button class="dept-tab" onclick="loadDeptDashboard('TVA', this)">TVA</button>
+        <button class="dept-tab" onclick="loadDeptDashboard('TVM', this)">TVM</button>
+        <button class="dept-tab" onclick="loadDeptDashboard('TVX', this)">TVX</button>
+        <button class="dept-tab" onclick="loadDeptDashboard('TVC', this)">TVC</button>
+      </div>
+      <span id="spinner-dashboard" style="display:none;"><span class="spinner"></span>加载中...</span>
+      <div id="dashboardContent">
+        <div class="kpi-grid" id="kpiGrid"></div>
+        <div id="dashboardTable" style="overflow-x:auto;"></div>
+        <button class="btn btn-outline btn-sm" onclick="runTool('budget')" id="btn-budget-summary" style="margin-top:16px;">📥 导出 Budget_Summary</button>
+        <span id="spinner-budget" style="display:none;"><span class="spinner"></span>运行中...</span>
+        <div class="tool-output" id="output-budget"></div>
+      </div>
     </div>
   </section>
 
@@ -413,6 +731,95 @@ body {
       </button>
       <span id="spinner-travel" style="display:none;"><span class="spinner"></span>运行中…</span>
       <div class="tool-output" id="output-travel"></div>
+    </div>
+    <div class="tool-panel" style="margin-top:16px;">
+      <h3 style="margin-bottom:6px;">🧾 差旅发票审核</h3>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;line-height:1.7;">
+        上传一个或多个 PDF / DOCX 差旅材料。费用归为机票/火车、住宿和打车/市内交通（含停车、高速、加油、单车租赁）。系统读取原模板并在原模板所在目录生成可下载的新表，原模板不会被覆盖。
+      </p>
+      <div style="display:grid;grid-template-columns:120px minmax(260px,1fr);gap:8px 12px;align-items:center;font-size:13px;">
+        <label for="travelInvoiceFiles">差旅材料</label>
+        <input id="travelInvoiceFiles" type="file" accept=".pdf,.doc,.docx" multiple onchange="showTravelInvoiceFileNames()">
+        <label for="travelClaimWorkbook">报销明细（可选，用于核对漏票与类别）</label>
+        <input id="travelClaimWorkbook" type="file" accept=".xlsx,.xlsm" onchange="showTravelInvoiceFileNames()">
+        <label for="travelCorrectionManifest">已审核人工动作（可选）</label>
+        <input id="travelCorrectionManifest" type="file" accept=".json,application/json" onchange="showTravelInvoiceFileNames()">
+        <label for="travelInvoiceTemplate">Excel模板路径</label>
+        <input id="travelInvoiceTemplate" type="text" value="C:\Users\LinJing(CN-TV-F)\Desktop\Jing\00_IAV_TV\02_Budget Report\CN03-22052\05_Acceptance\2026\TF3_BT\Vendor_Weekly_Business Trip Expense Claim_IAV_Q3_260824.xlsx" style="width:100%;padding:7px 9px;border:1px solid var(--border);border-radius:5px;font-size:12px;">
+        <span></span><div id="travelInvoiceTemplateHint" style="font-size:11px;color:var(--text-secondary);margin-top:-3px;">正在查找文件夹内最新表格作为默认模板…</div>
+        <label for="travelPolicySelect">差标计算方式</label>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <select id="travelPolicySelect" style="padding:7px 9px;border:1px solid var(--border);border-radius:5px;font-size:12px;min-width:150px;"></select>
+          <button class="btn btn-outline btn-sm" type="button" onclick="editTravelPolicy()">编辑当前差标</button>
+          <button class="btn btn-outline btn-sm" type="button" onclick="newTravelPolicy()">新增差标</button>
+        </div>
+        <label for="travelInvoicePO">PO No.（可选）</label>
+        <input id="travelInvoicePO" type="text" placeholder="留空则沿用模板中最近一条PO" style="width:100%;padding:7px 9px;border:1px solid var(--border);border-radius:5px;font-size:12px;">
+        <label for="travelInvoiceDate">输出日期</label>
+        <input id="travelInvoiceDate" type="text" value="" placeholder="YYMMDD" style="width:120px;padding:7px 9px;border:1px solid var(--border);border-radius:5px;font-size:12px;">
+      </div>
+      <div id="travelPolicyManager" style="display:none;margin-top:12px;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:8px;">差标设置</div>
+        <div style="display:grid;grid-template-columns:110px minmax(180px,1fr) 90px 90px;gap:7px 8px;align-items:center;font-size:12px;">
+          <label for="travelPolicyName">差标名称</label>
+          <input id="travelPolicyName" type="text" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;">
+          <label for="travelPolicyUnknown">未知城市</label>
+          <select id="travelPolicyUnknown" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;"><option value="2">Layer 2</option><option value="1.5">Layer 1.5</option><option value="1">Layer 1</option></select>
+          <div style="font-weight:600;">城市等级</div><div style="font-weight:600;">城市清单（逗号分隔）</div><div style="font-weight:600;">住宿/晚</div><div style="font-weight:600;">津贴/天</div>
+          <label>Layer 1</label><input id="travelPolicyCities1" type="text" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;"><input id="travelPolicyHotel1" type="number" step="0.01" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;"><input id="travelPolicyAllowance1" type="number" step="0.01" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;">
+          <label>Layer 1.5</label><input id="travelPolicyCities15" type="text" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;"><input id="travelPolicyHotel15" type="number" step="0.01" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;"><input id="travelPolicyAllowance15" type="number" step="0.01" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;">
+          <label>Layer 2</label><input id="travelPolicyCities2" type="text" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;"><input id="travelPolicyHotel2" type="number" step="0.01" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;"><input id="travelPolicyAllowance2" type="number" step="0.01" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;">
+          <label>International</label><input id="travelPolicyCitiesInternational" type="text" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;"><input id="travelPolicyHotelInternational" type="number" step="0.01" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;"><input id="travelPolicyAllowanceInternational" type="number" step="0.01" style="padding:6px 8px;border:1px solid var(--border);border-radius:4px;">
+        </div>
+        <div style="margin-top:9px;display:flex;gap:8px;">
+          <button class="btn btn-primary btn-sm" type="button" onclick="saveTravelPolicy()">保存差标</button>
+          <button class="btn btn-outline btn-sm" type="button" onclick="document.getElementById('travelPolicyManager').style.display='none'">取消</button>
+        </div>
+      </div>
+      <div id="travelInvoiceFileNames" style="font-size:12px;color:var(--text-secondary);margin:10px 0;"></div>
+      <div style="font-size:11px;color:var(--text-secondary);margin-top:-6px;line-height:1.6;">人工动作清单只支持已审核的补录/排除，必须通过源 PDF SHA-256 匹配；附清单时只上传一个差旅文件。</div>
+      <div style="display:grid;grid-template-columns:120px minmax(260px,1fr);gap:8px 12px;align-items:center;font-size:13px;margin-top:12px;">
+        <label for="travelReocrPages">定向重识别页码</label>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <input id="travelReocrPages" type="text" placeholder="例如 5,8,10" style="width:180px;padding:7px 9px;border:1px solid var(--border);border-radius:5px;font-size:12px;">
+          <button class="btn btn-outline btn-sm" type="button" onclick="reocrTravelPages()" id="btn-travel-reocr">🔎 局部 OCR 重读</button>
+          <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--text-secondary);"><input id="travelReocrPaddle" type="checkbox">额外手动复读其他页（可选）</label>
+          <span id="spinner-travel-reocr" style="display:none;"><span class="spinner"></span>正在重读页面…</span>
+        </div>
+        <span></span><div style="font-size:11px;color:var(--text-secondary);line-height:1.6;">上传 PDF 后，系统会自动挑选疑似页面，用 PaddleOCR 原彩图和红色通道复读（整个上传批次最多 3 页）；其余页面仍执行主识别并保留风险提示。发现清晰金额冲突时列为风险，不会把候选金额直接写成已确认费用。此处仅用于额外手动复读其他页面。</div>
+      </div>
+      <div style="margin-top:10px;display:flex;align-items:center;gap:12px;">
+        <button class="btn btn-outline" onclick="reviewTravelInvoices(true)" id="btn-travel-preview">🧪 预览映射</button>
+        <button class="btn btn-primary" onclick="reviewTravelInvoices()" id="btn-travel-invoice">🔍 识别并生成审核表</button>
+        <span id="spinner-travel-invoice" style="display:none;"><span class="spinner"></span>识别并自动复核疑似页中…</span>
+      </div>
+      <div id="travelReocrResult" style="display:none;margin-top:12px;"></div>
+      <div id="travelInvoiceResult" style="display:none;margin-top:14px;"></div>
+    </div>
+  </section>
+
+  <!-- ========== GR WP 合并 ========== -->
+  <section class="page" id="page-wp-merge">
+    <h1 class="page-title">🗂️ GR WP 合并</h1>
+    <p class="page-subtitle">按季度 + PO + 人员，把审核通过的工时表合并成 GR Working Paper</p>
+    <div class="tool-panel">
+      <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:12px;">
+        <label style="font-size:13px;">季度：
+          <select id="wpMergeQuarter" style="padding:6px 10px;border-radius:6px;border:1px solid var(--border);font-size:13px;">
+            <option value="Q1">Q1</option>
+            <option value="Q2">Q2</option>
+            <option value="Q3" selected>Q3</option>
+            <option value="Q4">Q4</option>
+          </select>
+        </label>
+        <button class="btn btn-outline btn-sm" onclick="wpMerge(true)">🔍 预览（不写文件）</button>
+        <button class="btn btn-primary" onclick="wpMerge(false)" id="btn-wp-merge">▶ 执行合并</button>
+      </div>
+      <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">
+        输出目录：<code>CNTS-25165\03_GR Documents\2026\VCTC\<span id="wpMergeQuarterLabel">Q3</span>\WP</code>
+        （一个 PO 一个文件夹，每人一个合并 PDF；含电子签 / 缺失的源文件不自动合并，列在下方待手动处理）
+      </div>
+      <div id="wpMergeResult" style="font-size:13px;"></div>
     </div>
   </section>
 
@@ -430,6 +837,10 @@ body {
           <option value="pending">⏳ GR Pending</option>
           <option value="done">✅ GR Done</option>
         </select>
+      </div>
+      <div id="costStatusPanel" style="margin:0 0 16px;padding:12px;border:1px solid var(--border);border-radius:8px;background:#fbfcff;">
+        <div style="font-weight:600;font-size:13px;margin-bottom:8px;">💰 Cost Tracking（只读）</div>
+        <div id="costStatusSummary" style="font-size:12px;color:var(--text-secondary);">加载中…</div>
       </div>
       <div id="pogrTable" style="overflow-x:auto;">加载中…</div>
     </div>
@@ -528,20 +939,168 @@ body {
 // ============================================================
 // State
 // ============================================================
-const API_BASE = 'http://localhost:8765';
+const API_BASE = '';  // 使用相对路径，避免 localhost vs 127.0.0.1 跨域问题
 let appData = { projects: [], alerts: [], outputs: [] };
 let editContext = null;
+let timesheetReviewOptions = { people: [], levels: [], rates: [] };
+let travelPolicies = { active_policy: 'VGC', policies: {} };
+let travelPolicyEditMode = 'edit';
+let travelInvoiceReviewState = null;
+let travelInvoiceOcrComparisonState = null;
 
 // ============================================================
-// Init
+// Init — 用 try/catch 包裹确保导航始终可用
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
-  updateClock();
-  setInterval(updateClock, 30000);
-  initNavigation();
-  initSearch();
-  refreshAll();
+  try {
+    updateClock();
+    setInterval(updateClock, 30000);
+    initNavigation();
+    initSearch();
+    const today = new Date();
+    document.getElementById('travelInvoiceDate').value = String(today.getFullYear()).slice(-2)
+      + String(today.getMonth() + 1).padStart(2, '0') + String(today.getDate()).padStart(2, '0');
+    loadLatestTravelInvoiceTemplate();
+    loadTravelPolicies();
+    // 首次加载：显示 loading 状态，然后异步加载数据
+    setAllLoading(true);
+    refreshAll().finally(() => setAllLoading(false));
+  } catch (e) {
+    console.error('Init error:', e);
+    // 即使出错，确保 loading 状态被清除
+    setAllLoading(false);
+  }
 });
+
+async function loadLatestTravelInvoiceTemplate() {
+  const input = document.getElementById('travelInvoiceTemplate');
+  const hint = document.getElementById('travelInvoiceTemplateHint');
+  if (!input) return;
+  try {
+    const resp = await fetch('/api/travel/invoice-template-default');
+    const data = await resp.json().catch(() => ({}));
+    if (resp.ok && data.ok && data.template_path) {
+      input.value = data.template_path;
+      if (hint) hint.textContent = `默认模板：${data.template_path}；识别审核后自动保存到：${data.output_dir || '模板所在文件夹'}`;
+    } else if (hint) {
+      hint.textContent = '默认模板读取失败，可手工填写模板路径。';
+    }
+  } catch (e) {
+    if (hint) hint.textContent = '默认模板读取失败，可手工填写模板路径。';
+  }
+}
+
+async function loadTravelPolicies() {
+  try {
+    const resp = await fetch('/api/travel/standards');
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || !data.policies) throw new Error(data.error || '差标读取失败');
+    travelPolicies = data;
+    const select = document.getElementById('travelPolicySelect');
+    if (!select) return;
+    select.innerHTML = Object.entries(data.policies).map(([key, policy]) =>
+      `<option value="${escapeHtml(key)}">${escapeHtml(policy.name || key)}</option>`
+    ).join('');
+    select.value = data.active_policy || Object.keys(data.policies)[0] || 'VGC';
+  } catch (e) {
+    const select = document.getElementById('travelPolicySelect');
+    if (select && !select.options.length) select.innerHTML = '<option value="VGC">VGC差标</option>';
+  }
+}
+
+function travelPolicyLevelFields(level) {
+  const ids = {
+    '1': ['travelPolicyCities1', 'travelPolicyHotel1', 'travelPolicyAllowance1'],
+    '1.5': ['travelPolicyCities15', 'travelPolicyHotel15', 'travelPolicyAllowance15'],
+    '2': ['travelPolicyCities2', 'travelPolicyHotel2', 'travelPolicyAllowance2'],
+    international: ['travelPolicyCitiesInternational', 'travelPolicyHotelInternational', 'travelPolicyAllowanceInternational']
+  }[level];
+  return ids.map(id => document.getElementById(id));
+}
+
+function fillTravelPolicyEditor(policy) {
+  const value = policy || {};
+  document.getElementById('travelPolicyName').value = value.name || '';
+  document.getElementById('travelPolicyUnknown').value = String(value.unknown_level || '2');
+  ['1', '1.5', '2', 'international'].forEach(level => {
+    const [cities, hotel, allowance] = travelPolicyLevelFields(level);
+    const config = (value.levels || {})[level] || {};
+    cities.value = (config.cities || []).join(', ');
+    hotel.value = config.accommodation ?? '';
+    allowance.value = config.allowance ?? '';
+  });
+}
+
+function editTravelPolicy() {
+  const key = document.getElementById('travelPolicySelect').value;
+  if (!key || !travelPolicies.policies[key]) return;
+  travelPolicyEditMode = 'edit';
+  fillTravelPolicyEditor(travelPolicies.policies[key]);
+  document.getElementById('travelPolicyManager').style.display = 'block';
+}
+
+function newTravelPolicy() {
+  travelPolicyEditMode = 'new';
+  const current = travelPolicies.policies[document.getElementById('travelPolicySelect').value];
+  fillTravelPolicyEditor(JSON.parse(JSON.stringify(current || {levels: {}})));
+  document.getElementById('travelPolicyName').value = '';
+  document.getElementById('travelPolicyManager').style.display = 'block';
+  document.getElementById('travelPolicyName').focus();
+}
+
+async function saveTravelPolicy() {
+  const name = document.getElementById('travelPolicyName').value.trim();
+  if (!name) {
+    showToast('error', '请填写差标名称');
+    return;
+  }
+  const select = document.getElementById('travelPolicySelect');
+  let key = travelPolicyEditMode === 'edit' ? select.value : name.replace(/\s+/g, '_');
+  if (!key) key = 'VGC';
+  if (travelPolicyEditMode === 'new' && travelPolicies.policies[key]) {
+    key += '_' + Date.now();
+  }
+  const policy = { name, levels: {}, unknown_level: document.getElementById('travelPolicyUnknown').value };
+  ['1', '1.5', '2', 'international'].forEach(level => {
+    const [cities, hotel, allowance] = travelPolicyLevelFields(level);
+    policy.levels[level] = {
+      label: level === 'international' ? 'International' : `Layer ${level}`,
+      cities: cities.value.split(/[,，]/).map(item => item.trim()).filter(Boolean),
+      accommodation: Number(hotel.value || 0),
+      allowance: Number(allowance.value || 0)
+    };
+  });
+  const payload = JSON.parse(JSON.stringify(travelPolicies));
+  payload.policies[key] = policy;
+  payload.active_policy = key;
+  try {
+    const resp = await fetch('/api/travel/standards', {
+      method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || !data.ok) throw new Error(data.error || '差标保存失败');
+    travelPolicies = data;
+    await loadTravelPolicies();
+    document.getElementById('travelPolicySelect').value = key;
+    document.getElementById('travelPolicyManager').style.display = 'none';
+    showToast('success', '差标已保存');
+  } catch (e) {
+    showToast('error', e.message || '差标保存失败');
+  }
+}
+
+/** 切换所有模块的加载状态 */
+function setAllLoading(loading) {
+  const msg = loading ? '加载中…' : '加载失败，请点击刷新按钮重试';
+  const subtitle = document.getElementById('dashboardSubtitle');
+  const overview = document.getElementById('projectOverview');
+  const timeline = document.getElementById('timeline');
+  const outputs = document.getElementById('recentOutputs');
+  if (subtitle) subtitle.textContent = loading ? '加载中…' : '数据加载失败 · 请确认 API 服务已启动';
+  if (overview && overview.textContent === '加载中…') overview.textContent = msg;
+  if (timeline) timeline.textContent = msg;
+  if (outputs) outputs.textContent = msg;
+}
 
 function updateClock() {
   const now = new Date();
@@ -551,11 +1110,17 @@ function updateClock() {
 }
 
 // ============================================================
-// Navigation
+// Navigation — 确保即使其他代码出错，导航仍然可用
 // ============================================================
 function initNavigation() {
   document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', () => switchPage(item.dataset.page));
+    item.addEventListener('click', () => {
+      try {
+        switchPage(item.dataset.page);
+      } catch (e) {
+        console.error('Navigation error:', e);
+      }
+    });
   });
 }
 
@@ -570,40 +1135,94 @@ function switchPage(pageName) {
   if (page) page.classList.add('active');
 
   // Load page-specific data
-  if (pageName === 'dashboard') loadDashboard();
-  if (pageName === 'po-gr-status') renderPOGRStatus();
-  if (pageName === 'knowledge-base') loadKBOverview();
-  if (pageName === 'tools') loadOutputFiles();
+  try {
+    if (pageName === 'dashboard') loadDashboard();
+    if (pageName === 'po-gr-status') {
+      renderPOGRStatus();
+      loadCostStatus();
+    }
+    if (pageName === 'knowledge-base') loadKBOverview();
+    if (pageName === 'tools') loadOutputFiles();
+    if (pageName === 'budget-report') loadBudgetReportPage();
+    if (pageName === 'timesheet-review') loadTimesheetReview();
+  } catch (e) {
+    console.error('switchPage error:', e);
+  }
 }
 
 // ============================================================
-// Data Loading
+// Data Loading — 带超时的 fetch，防止请求挂起
 // ============================================================
+const FETCH_TIMEOUT = 10000;  // 10 秒超时
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = FETCH_TIMEOUT) {
+  const controller = new AbortController();
+  let timedOut = false;
+  const timeoutId = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, timeoutMs);
+  try {
+    const resp = await fetch(url, { ...options, signal: controller.signal });
+    clearTimeout(timeoutId);
+    return resp;
+  } catch (e) {
+    clearTimeout(timeoutId);
+    if (timedOut) {
+      const minutes = Math.round(timeoutMs / 60000);
+      throw new Error(`\u5904\u7406\u8d85\u8fc7 ${minutes} \u5206\u949f\u4ecd\u672a\u8fd4\u56de\uff1b\u6279\u91cf\u6587\u4ef6\u8f83\u591a\u65f6\u53ef\u5206\u6279\u4e0a\u4f20\u3002`);
+    }
+    throw e;
+  }
+}
+
 async function refreshAll() {
-  await Promise.all([loadStatus(), loadAlerts(), loadOutputs()]);
+  try {
+    await Promise.all([loadStatus(), loadAlerts(), loadOutputs()]);
+  } catch (e) {
+    console.error('refreshAll error:', e);
+  }
   loadDashboard();
 }
 
 async function apiGet(path) {
   try {
-    const resp = await fetch(`${API_BASE}${path}`);
+    const resp = await fetchWithTimeout(`${API_BASE}${path}`, {}, FETCH_TIMEOUT);
+    if (!resp.ok) {
+      console.error(`API GET ${path} returned ${resp.status}`);
+      return null;
+    }
     return await resp.json();
   } catch (e) {
     console.error(`API GET ${path} failed:`, e);
+    if (e.name === 'AbortError') {
+      showToast('error', '请求超时，请检查服务器是否正常运行');
+    } else {
+      showToast('error', '服务器连接失败，请确认 API 服务已启动');
+    }
     return null;
   }
 }
 
-async function apiPost(path, body) {
+async function apiPost(path, body, timeoutMs = FETCH_TIMEOUT) {
   try {
-    const resp = await fetch(`${API_BASE}${path}`, {
+    const resp = await fetchWithTimeout(`${API_BASE}${path}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-    });
+    }, timeoutMs);
+    if (!resp.ok) {
+      const errData = await resp.json().catch(() => ({}));
+      return { ...errData, ok: false, error: errData.error || `HTTP ${resp.status}` };
+    }
     return await resp.json();
   } catch (e) {
     console.error(`API POST ${path} failed:`, e);
+    if (e.name === 'AbortError') {
+      showToast('error', '请求超时，请检查服务器是否正常运行');
+    } else {
+      showToast('error', '服务器连接失败，请确认 API 服务已启动');
+    }
     return { error: e.message };
   }
 }
@@ -764,7 +1383,9 @@ async function runTool(tool) {
   output.classList.remove('show');
   output.textContent = '';
 
-  const result = await apiPost(`/api/run/${tool}`, {});
+  // 差旅汇总全量扫描约需 3 分钟，客户端超时必须不小于服务端预算（见 api_server.py 的 tool_timeouts）。
+  const timeoutMs = tool === 'travel' ? 600000 : 120000;
+  const result = await apiPost(`/api/run/${tool}`, { mode: 'report', project: 'CNTS-25165' }, timeoutMs);
 
   btn.disabled = false;
   spinner.style.display = 'none';
@@ -783,6 +1404,69 @@ async function runTool(tool) {
     output.classList.add('show');
     showToast('error', 'API 服务器未响应');
   }
+}
+
+// ============================================================
+// GR WP 合并
+// ============================================================
+async function wpMerge(dryRun) {
+  const quarter = document.getElementById('wpMergeQuarter').value;
+  document.getElementById('wpMergeQuarterLabel').textContent = quarter;
+  const btn = document.getElementById('btn-wp-merge');
+  const box = document.getElementById('wpMergeResult');
+  btn.disabled = true;
+  box.innerHTML = '<div style="color:var(--text-secondary);">执行中…（合并与电子签检测可能需要一点时间）</div>';
+
+  const res = await apiPost('/api/wp/merge', { quarter, dry_run: dryRun }, 180000);
+  btn.disabled = false;
+
+  if (!res || res.error) {
+    box.innerHTML = `<div style="color:#c0392b;">[错误] ${escapeHtml((res && res.error) || 'API 未响应，请确认工作台服务已启动')}</div>`;
+    return;
+  }
+
+  const label = dryRun ? '预览（未写文件）' : '已执行';
+  let html = `<div style="margin-bottom:10px;"><b>${escapeHtml(res.quarter)} ${label}</b> · ` +
+    `共 ${res.groups_total} 个分组 · ✅ 成功 ${res.merged.length} · ` +
+    `<span style="color:#c0392b;">⚠ 需手动 ${res.manual.length}</span>` +
+    (res.errors.length ? ` · ❌ 失败 ${res.errors.length}` : '') + `</div>`;
+  html += `<div style="font-size:11px;color:var(--text-secondary);margin-bottom:12px;">输出目录：<code>${escapeHtml(res.output_root)}</code></div>`;
+
+  if (res.merged.length) {
+    const byFolder = {};
+    res.merged.forEach(m => { (byFolder[m.folder] = byFolder[m.folder] || []).push(m); });
+    html += `<div style="font-weight:600;margin-bottom:6px;">✅ 已生成 ${res.merged.length} 个文件：</div>`;
+    for (const folder of Object.keys(byFolder)) {
+      html += `<div style="margin:4px 0 8px;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:#f6fff6;">`;
+      html += `<div style="font-family:monospace;font-size:11px;color:#1e8449;margin-bottom:4px;">📁 ${escapeHtml(folder)}</div>`;
+      byFolder[folder].forEach(m => {
+        html += `<div style="font-size:12px;padding-left:12px;">📄 ${escapeHtml(m.file)} <span style="color:var(--text-secondary);">(${m.sources.length} 个源文件)</span></div>`;
+      });
+      html += `</div>`;
+    }
+  }
+
+  if (res.manual.length) {
+    html += `<div style="font-weight:600;margin:14px 0 6px;color:#c0392b;">⚠ 需手动处理 ${res.manual.length} 个（含电子签 / 缺失，请手动合并后放入对应 PO 文件夹）：</div>`;
+    res.manual.forEach(m => {
+      html += `<div style="margin:4px 0 8px;padding:8px 10px;border:1px solid #f5c6cb;border-radius:6px;background:#fdf2f2;">`;
+      html += `<div style="font-size:12px;font-weight:600;">PO ${escapeHtml(m.po)} / ${escapeHtml(m.person)}</div>`;
+      html += `<div style="font-size:11px;color:#a93226;margin:2px 0;">原因：${escapeHtml(m.reason)}</div>`;
+      html += `<div style="font-size:11px;color:var(--text-secondary);">源文件：${m.source_files.map(escapeHtml).join('、')}</div>`;
+      html += `</div>`;
+    });
+  }
+
+  if (res.errors.length) {
+    html += `<div style="font-weight:600;margin:14px 0 6px;color:#c0392b;">❌ 失败：</div>`;
+    res.errors.forEach(e => {
+      html += `<div style="font-size:12px;color:#c0392b;">PO ${escapeHtml(e.po)} / ${escapeHtml(e.person)}：${escapeHtml(e.reason)}</div>`;
+    });
+  }
+
+  box.innerHTML = html;
+  if (dryRun) showToast('info', '预览完成，未写入任何文件');
+  else showToast('success', '合并完成');
 }
 
 // ============================================================
@@ -841,6 +1525,49 @@ function renderPOGRStatus() {
   }
   html += '</tbody></table>';
   container.innerHTML = html;
+}
+
+async function loadCostStatus() {
+  const summary = document.getElementById('costStatusSummary');
+  if (!summary) return;
+  const data = await apiGet('/api/cost/status?project=CNTS-25165');
+  if (!data || !data.ok) {
+    summary.textContent = '成本状态暂时无法读取，请确认 API 服务已启动。';
+    return;
+  }
+  const facts = data.cost_facts || [];
+  const allocations = data.po_allocations || [];
+  const gate = data.payment_gate || {};
+  const poExceptions = (data.open_exceptions || [])
+    .filter(item => String(item.exception_type || '').startsWith('COST_PO_'))
+    .reduce((total, item) => total + Number(item.count || 0), 0);
+  const factCount = facts.reduce((total, item) => total + Number(item.count || 0), 0);
+  const allocationCount = allocations.reduce((total, item) => total + Number(item.count || 0), 0);
+  const factAmount = facts.reduce((total, item) => total + Number(item.amount || 0), 0);
+  summary.innerHTML = `
+    <div style="display:flex;gap:18px;flex-wrap:wrap;line-height:1.8;">
+      <span>成本事实：<strong>${factCount}</strong> 条 / ¥${factAmount.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</span>
+      <span>PO 分配行：<strong>${allocationCount}</strong> 条</span>
+      <span>待付款目标：<strong>${Number(gate.total_target_count || 0)}</strong> 条</span>
+      <span>开放 PO 风险：<strong>${poExceptions}</strong> 条</span>
+    </div>
+    <details style="margin-top:8px;">
+      <summary style="cursor:pointer;color:var(--primary);">查看 5 张发票的 PO/GR 明细</summary>
+      <div style="overflow-x:auto;margin-top:6px;">
+        <table class="data-table" style="font-size:11px;"><thead><tr><th>发票号</th><th>GR</th><th>PO</th><th>类型</th><th>数量</th><th>金额</th></tr></thead><tbody>
+          ${(data.invoice_targets || []).map(item => `<tr><td>${escapeHtml(item.invoice_ref || '')}</td><td>${escapeHtml(item.gr_ref || '')}</td><td>${escapeHtml(item.po_id || '—')}</td><td>${item.target_type === 'allocation' ? '多 PO 分配行' : '成本事实'}</td><td>${Number(item.count || 0)}</td><td>¥${Number(item.amount || 0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td></tr>`).join('')}
+        </tbody></table>
+      </div>
+    </details>
+    <details style="margin-top:8px;">
+      <summary style="cursor:pointer;color:var(--primary);">查看开放 PO 风险明细（${poExceptions} 条）</summary>
+      <div style="overflow-x:auto;margin-top:6px;max-height:260px;overflow-y:auto;">
+        <table class="data-table" style="font-size:11px;"><thead><tr><th>事实 ID</th><th>类型</th><th>人员</th><th>月份</th><th>WBS</th><th>工时</th><th>金额</th></tr></thead><tbody>
+          ${(data.open_exception_details || []).map(item => { const d=item.details||{}; return `<tr><td>${escapeHtml(item.target_key || '')}</td><td>${escapeHtml(item.exception_type || '')}</td><td>${escapeHtml(d.employee_name || 'Other Expenses')}</td><td>${escapeHtml(d.month || '')}</td><td>${escapeHtml(d.wbs || '')}</td><td>${Number(d.hours || 0).toLocaleString()}</td><td>¥${Number(d.amount || 0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td></tr>`; }).join('')}
+        </tbody></table>
+      </div>
+    </details>
+    <div style="margin-top:4px;color:#806000;">付款状态仅展示，不在此页面写入；当前付款闸门为只读。</div>`;
 }
 
 function openEdit(project, poId, field, currentValue) {
@@ -952,6 +1679,402 @@ function loadOutputFiles() {
   ).join('');
 }
 
+function reviewOptionKey(value) {
+  return String(value || '').toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]/g, '');
+}
+
+function findReviewPerson(value) {
+  const key = reviewOptionKey(value);
+  return (timesheetReviewOptions.people || []).find(person => {
+    if (reviewOptionKey(person.canonical_name) === key) return true;
+    return (person.aliases || []).some(alias => reviewOptionKey(alias) === key);
+  });
+}
+
+function reviewLevelRate(level) {
+  return (timesheetReviewOptions.levels || []).find(item => item.value === level)?.customer_day_rate;
+}
+
+function selectOption(value, label, selected = false) {
+  return `<option value="${escapeHtml(String(value ?? ''))}"${selected ? ' selected' : ''}>${escapeHtml(label)}</option>`;
+}
+
+function buildReviewPersonSelect(candidate) {
+  const sourceName = candidate.canonical_name || candidate.raw_name || '';
+  const options = [];
+  (timesheetReviewOptions.people || []).forEach(person => {
+    options.push(selectOption(
+      person.canonical_name,
+      `${person.canonical_name}${person.level ? ` · ${person.level}` : ''}`,
+      false,
+    ));
+  });
+  return `<input id="rv-name-${candidate.candidate_id}" list="rv-person-list-${candidate.candidate_id}" value="${escapeHtml(sourceName)}" title="可从已有 PO Usage Status 名单下拉选择，也可输入新员工或修正后的姓名" onchange="reviewPersonChanged('${candidate.candidate_id}')" style="width:100%;"><datalist id="rv-person-list-${candidate.candidate_id}">${options.join('')}</datalist>`;
+}
+
+function buildReviewLevelSelect(candidate, selectedPerson) {
+  const selected = selectedPerson?.level || candidate.parse_json?.level || '';
+  const options = [selectOption('', '选择 Level…', !selected)];
+  const known = new Set();
+  (timesheetReviewOptions.levels || []).forEach(item => {
+    known.add(item.value);
+    options.push(selectOption(item.value, item.value, item.value === selected));
+  });
+  if (selected && !known.has(selected)) options.push(selectOption(selected, selected, true));
+  return `<select id="rv-level-${candidate.candidate_id}" onchange="reviewLevelChanged('${candidate.candidate_id}')" style="width:100%;">${options.join('')}</select>`;
+}
+
+function buildReviewRateSelect(candidate, selectedPerson, selectedLevel) {
+  const mapped = selectedPerson?.customer_day_rate ?? reviewLevelRate(selectedLevel);
+  const selected = mapped == null ? '' : String(mapped);
+  const options = [selectOption('', '选择客户日费率…', !selected)];
+  const known = new Set();
+  (timesheetReviewOptions.rates || []).forEach(item => {
+    const value = String(item.value);
+    known.add(value);
+    options.push(selectOption(value, item.label || `¥${value}/天`, value === selected));
+  });
+  if (selected && !known.has(selected)) options.push(selectOption(selected, `¥${selected}/天`, true));
+  return `<select id="rv-rate-${candidate.candidate_id}" style="width:100%;">${options.join('')}</select>`;
+}
+
+function reviewPersonChanged(candidateId) {
+  const personSelect = document.getElementById(`rv-name-${candidateId}`);
+  const levelSelect = document.getElementById(`rv-level-${candidateId}`);
+  const rateSelect = document.getElementById(`rv-rate-${candidateId}`);
+  const person = findReviewPerson(personSelect?.value);
+  if (!person) return;
+  if (levelSelect && person.level) levelSelect.value = person.level;
+  if (rateSelect && person.customer_day_rate != null) {
+    const value = String(person.customer_day_rate);
+    if (![...rateSelect.options].some(option => option.value === value)) {
+      rateSelect.add(new Option(`¥${value}/天`, value));
+    }
+    rateSelect.value = value;
+  }
+}
+
+function reviewLevelChanged(candidateId) {
+  const levelSelect = document.getElementById(`rv-level-${candidateId}`);
+  const rateSelect = document.getElementById(`rv-rate-${candidateId}`);
+  const rate = reviewLevelRate(levelSelect?.value);
+  if (rate == null || !rateSelect) return;
+  const value = String(rate);
+  if (![...rateSelect.options].some(option => option.value === value)) {
+    rateSelect.add(new Option(`¥${value}/天`, value));
+  }
+  rateSelect.value = value;
+}
+
+function reviewFileName(path) {
+  return String(path || '').split(/[\\/]/).pop() || '来源文件未记录';
+}
+
+function reviewIssueLabel(type) {
+  const labels = {
+    MISSING_HOURS: '缺工时', MISSING_PO: '缺 PO', UNKNOWN_PO: '未知 PO',
+    NEW_MEMBER: '新人员', OCR_REVIEW: 'OCR 复核', VERSION_CONFLICT: '版本冲突',
+    VALIDATION_BLOCKED: '字段校验阻断', VALIDATION_WARNING: '字段校验警告',
+  };
+  return labels[type] || type || '待确认';
+}
+
+function renderReviewIssues(candidate) {
+  const openItems = (candidate.review_items || []).filter(item => item.status === 'OPEN');
+  const badges = openItems.map(item => {
+    const severity = String(item.severity || '').toUpperCase();
+    const tone = severity === 'BLOCKING' ? 'blocking' : (severity === 'WARNING' ? 'warning' : 'info');
+    return `<span class="review-badge review-badge-${tone}">${escapeHtml(reviewIssueLabel(item.queue_type))}</span>`;
+  });
+  if (!badges.length) badges.push('<span class="review-badge review-badge-info">自动匹配候选</span>');
+  return badges.join('');
+}
+
+function reviewDeleteLabel(candidate) {
+  const conflict = (candidate.review_items || []).some(
+    item => item.status === 'OPEN' && item.queue_type === 'VERSION_CONFLICT'
+  );
+  return conflict ? '删除冲突版本' : '删除条目';
+}
+
+async function locateTimesheetSource(candidateId) {
+  const result = await apiPost(`/api/timesheets/source/open/${candidateId}`, {}, 15000);
+  if (result?.ok) showToast('success', `已请求打开目标文件夹\n${result.folder || ''}\n文件：${result.file_name || 'PDF'}`);
+  else showToast('error', result?.error || '无法定位来源文件');
+}
+
+async function dismissTimesheetCandidate(candidateId, label) {
+  const reason = window.prompt(
+    `${label || '删除条目'}：该条目会从待审核列表移除，但不会删除原始 PDF 或审计记录。\n请输入原因（可选）：`,
+    label === '删除冲突版本' ? '版本冲突，保留另一份 PDF' : '',
+  );
+  if (reason === null) return;
+  const project = document.getElementById('reviewProject')?.value || 'CNTS-25165';
+  const result = await apiPost(`/api/timesheets/review/${candidateId}/dismiss`, {
+    project, reason: reason.trim() || label || '用户删除审核条目',
+  }, 30000);
+  if (result?.ok) {
+    showToast('success', `${label || '条目'}已移出待审核列表`);
+    loadTimesheetReview();
+  } else {
+    showToast('error', result?.error || '删除审核条目失败');
+  }
+}
+
+function markMissingTimesheetPreviewLinks(container, items) {
+  if (!container) return;
+  const missing = new Set((items || [])
+    .filter(item => item.source_available === false)
+    .map(item => String(item.candidate_id || '')));
+  if (!missing.size) return;
+  container.querySelectorAll('a[href*="/api/timesheets/source/preview/"]').forEach(link => {
+    const candidateId = link.href.slice(link.href.lastIndexOf('/') + 1);
+    if (!missing.has(candidateId)) return;
+    const badge = document.createElement('span');
+    badge.className = 'review-source-missing';
+    badge.textContent = '原件缺失';
+    badge.title = '登记路径下找不到原始 PDF';
+    link.replaceWith(badge);
+    link.closest('.review-source-actions')?.querySelector('button')?.remove();
+  });
+}
+
+async function loadTimesheetReview() {
+  const project = document.getElementById('reviewProject')?.value || 'CNTS-25165';
+  const [data, options] = await Promise.all([
+    apiGet('/api/timesheets/review?project=' + encodeURIComponent(project)),
+    apiGet('/api/timesheets/review-options?project=' + encodeURIComponent(project)),
+  ]);
+  timesheetReviewOptions = options || { people: [], levels: [], rates: [] };
+  const container = document.getElementById('timesheetReviewTable');
+  const count = document.getElementById('reviewCount');
+  if (!data || !container) return;
+  const scope = data.scope || timesheetReviewOptions.scope || {};
+  const scopeNote = document.getElementById('reviewScopeNote');
+  if (scopeNote) {
+    scopeNote.textContent = `当前审核范围：${scope.month || '上月'} · 仅读取 ${scope.source_dir || '上月工时 PDF'}；更早月份以 Budget Report 与 Monthly Closing 为准。`;
+  }
+  count.textContent = `本月待确认：${data.pending_count}`;
+  if (scope.source_dir_exists === false && scopeNote) {
+    scopeNote.textContent += ' · 当前月源目录不存在';
+  }
+  if (!data.candidates.length) {
+    container.innerHTML = '<div style="padding:16px;color:var(--text-secondary);">暂无待审核候选。</div>';
+    return;
+  }
+  setTimeout(() => markMissingTimesheetPreviewLinks(container, data.candidates), 0);
+  const rows = data.candidates.map(c => {
+    const period = c.year && c.month ? `${c.year}-${String(c.month).padStart(2,'0')}` : '';
+    const selectedPerson = findReviewPerson(c.canonical_name || c.raw_name || '');
+    const selectedLevel = selectedPerson?.level || c.parse_json?.level || '';
+    const methodClass = String(c.parse_method || '').toLowerCase().includes('ocr') ? 'ocr' : '';
+    return `<div class="review-card">
+      <div class="review-id">${escapeHtml(c.candidate_id.slice(-8))}</div>
+      <div class="review-source">
+        <div class="review-source-name">${escapeHtml(c.raw_name || c.canonical_name || '未识别姓名')}</div>
+        <div class="review-source-file" title="${escapeHtml(c.source_path || '')}">${escapeHtml(reviewFileName(c.source_path))}</div>
+        <div class="review-source-actions"><a href="${API_BASE}/api/timesheets/source/preview/${c.candidate_id}" target="_blank" rel="noopener">👁 预览</a><button type="button" onclick="locateTimesheetSource('${c.candidate_id}')">📂 定位</button></div>
+      </div>
+      <div class="review-issues"><span class="review-method ${methodClass}">${escapeHtml(c.parse_method || '未知')}</span>${renderReviewIssues(c)}</div>
+      <div class="review-field"><label>人员</label>${buildReviewPersonSelect(c)}<label>Level</label>${buildReviewLevelSelect(c, selectedPerson)}</div>
+      <div class="review-field"><label>月份</label><input id="rv-period-${c.candidate_id}" value="${period}" placeholder="YYYY-MM"><label>PO</label><input id="rv-po-${c.candidate_id}" value="${escapeHtml(c.po_id || '')}" placeholder="PO"></div>
+      <div class="review-field"><label>工时（小时）</label><input id="rv-hours-${c.candidate_id}" value="${c.total_hours ?? ''}" placeholder="小时"><label>客户日费率</label>${buildReviewRateSelect(c, selectedPerson, selectedLevel)}</div>
+      <div class="review-action"><button class="btn btn-primary btn-sm" onclick="approveTimesheet('${c.candidate_id}')">确认</button><button type="button" class="review-delete-btn" onclick="dismissTimesheetCandidate('${c.candidate_id}', '${reviewDeleteLabel(c)}')">${reviewDeleteLabel(c)}</button></div>
+    </div>`;
+  }).join('');
+  container.innerHTML = `<div class="review-grid-head"><div>候选</div><div>来源文件</div><div>解析 / 异常</div><div>人员 / Level</div><div>月份 / PO</div><div>工时 / 费率</div><div>操作</div></div>${rows}`;
+}
+
+function historicalBatchIssueText(item) {
+  const classification = item.classification || {};
+  const queues = (classification.open_queue_types || []).map(reviewIssueLabel);
+  const validation = classification.validation_status || 'MISSING';
+  const parts = [];
+  if (queues.length) parts.push(queues.join('、'));
+  parts.push(`校验 ${validation}`);
+  if (classification.secondary_batches?.length) {
+    parts.push(`另含 ${classification.secondary_batches.join('、')}`);
+  }
+  return parts.join(' · ');
+}
+
+function renderHistoricalBatchSummary(data) {
+  const selector = document.getElementById('historicalBatchFilter');
+  const selected = selector?.value || '';
+  if (selector) {
+    selector.innerHTML = '<option value="">全部历史批次</option>' + (data.batches || []).map(batch =>
+      `<option value="${escapeHtml(batch.key)}">${escapeHtml(batch.label)} (${batch.count})</option>`
+    ).join('');
+    selector.value = selected;
+  }
+  const summary = document.getElementById('historicalBatchSummary');
+  if (!summary) return;
+  summary.innerHTML = (data.batches || []).map(batch => {
+    const periods = (batch.periods || []).slice(0, 4).map(item => `${item.period}: ${item.count}`).join(' · ');
+    return `<div class="review-batch-card${batch.blocking ? ' blocking' : ''}" onclick="selectHistoricalBatch('${escapeHtml(batch.key)}')">
+      <div class="batch-count">${batch.count}</div>
+      <div class="batch-label">${escapeHtml(batch.label)}</div>
+      <div class="batch-desc">${escapeHtml(batch.description || '')}</div>
+      ${periods ? `<div class="batch-desc">${escapeHtml(periods)}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function selectHistoricalBatch(batch) {
+  const selector = document.getElementById('historicalBatchFilter');
+  if (selector) selector.value = batch;
+  loadHistoricalBatches();
+}
+
+function renderHistoricalBatchItems(data) {
+  const container = document.getElementById('historicalBatchItems');
+  if (!container) return;
+  if (!(data.items || []).length) {
+    container.innerHTML = '<div style="padding:14px;color:var(--text-secondary);">当前筛选没有待复核历史候选。</div>';
+    return;
+  }
+  setTimeout(() => markMissingTimesheetPreviewLinks(container, data.items), 0);
+  const rows = data.items.map(item => {
+    const source = reviewFileName(item.source_path);
+    const candidateId = escapeHtml(item.candidate_id || '');
+    const preview = item.candidate_id
+      ? `<a href="${API_BASE}/api/timesheets/source/preview/${candidateId}" target="_blank" rel="noopener">👁 预览</a>`
+      : '';
+    const status = item.review_status || 'REVIEW';
+    return `<tr>
+      <td><strong>${escapeHtml(item.classification?.period || '未定期间')}</strong><br><small>${escapeHtml(item.raw_name || item.canonical_name || '未识别姓名')}</small></td>
+      <td>${escapeHtml(source)}<br><small>${escapeHtml(item.parse_method || 'unknown')} · ${escapeHtml(status)}</small><br>${preview}</td>
+      <td><span class="review-badge review-badge-${item.classification?.batch === 'READY' ? 'info' : 'warning'}">${escapeHtml(item.classification?.batch_label || '待复核')}</span><br><small>${escapeHtml(historicalBatchIssueText(item))}</small></td>
+      <td>${escapeHtml(item.po_id || '缺少 PO')}<br><small>${item.total_hours == null ? '缺少工时' : `${item.total_hours} 小时`}</small></td>
+      <td><span class="review-readonly-note" style="display:inline-block;padding:5px 7px;font-size:10px;">历史批次只读</span></td>
+    </tr>`;
+  }).join('');
+  container.innerHTML = `<table class="data-table historical-review-table"><thead><tr><th>期间 / 人员</th><th>来源</th><th>批次 / 原因</th><th>PO / 工时</th><th>操作边界</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+async function loadHistoricalBatches() {
+  const project = document.getElementById('reviewProject')?.value || 'CNTS-25165';
+  const batch = document.getElementById('historicalBatchFilter')?.value || '';
+  const period = document.getElementById('historicalPeriodFilter')?.value.trim() || '';
+  const params = new URLSearchParams({ project, limit: '500' });
+  if (batch) params.set('batch', batch);
+  if (period) params.set('period', period);
+  const note = document.getElementById('historicalBatchNote');
+  if (note) note.textContent = '历史批次加载中…';
+  const data = await apiGet('/api/timesheets/review/batches?' + params.toString());
+  if (!data || !data.batches) {
+    if (note) note.textContent = '历史批次加载失败，请检查 API 服务状态。';
+    return;
+  }
+  renderHistoricalBatchSummary(data);
+  renderHistoricalBatchItems(data);
+  if (note) {
+    note.textContent = `历史待复核 ${data.pending_count || 0} 条；当前筛选显示 ${(data.items || []).length} 条。` +
+      ` 当前审核范围 ${data.scope?.month || '未知'} 已排除 ${data.current_scope_excluded || 0} 条。${data.approval_note || ''}`;
+  }
+}
+
+async function scanTimesheets() {
+  const project = document.getElementById('reviewProject')?.value || 'CNTS-25165';
+  const result = await apiPost('/api/timesheets/scan', { project }, 240000);
+  if (result?.ok) {
+    showToast('success', `扫描完成：新增 ${result.new || 0} 个候选`);
+    loadTimesheetReview();
+  } else {
+    showToast('error', result?.error || 'PDF 扫描失败');
+  }
+}
+
+async function runTimesheetOCR() {
+  const project = document.getElementById('reviewProject')?.value || 'CNTS-25165';
+  const btn = document.getElementById('btn-timesheet-ocr');
+  const status = document.getElementById('timesheetOcrStatus');
+  if (btn?.disabled) return;
+  if (btn) btn.disabled = true;
+  if (status) status.textContent = 'OCR 处理中（整批可能需要数分钟）…';
+  showToast('info', '当前审核月份 OCR 补做/重做中，请稍候…');
+  try {
+    const result = await apiPost('/api/timesheets/ocr', { project }, 900000);
+    const processed = result?.processed || 0;
+    const succeeded = result?.ocr_success || 0;
+    const failed = (result?.errors || []).length;
+    if (result?.ok) {
+      if (status) status.textContent = `OCR 完成：处理 ${processed}，成功 ${succeeded}`;
+      showToast('success', `OCR 完成：成功 ${succeeded} 个文件`);
+    } else {
+      if (status) status.textContent = `OCR 未完全成功：处理 ${processed}，失败 ${failed}`;
+      showToast('error', result?.error || 'OCR 失败');
+    }
+    if (processed || result?.ok) await loadTimesheetReview();
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function runStep2Reconcile() {
+  const project = document.getElementById('reviewProject')?.value || 'CNTS-25165';
+  const status = document.getElementById('step2AuditStatus');
+  if (status) status.textContent = '核查中，请稍候…';
+  const result = await apiPost('/api/reconcile/step2', { project }, 360000);
+  if (result?.ok) {
+    const po = result.po_master || {};
+    const mc = result.monthly_closing || {};
+    if (status) status.textContent = `PO 已解析 ${po.parsed_files || 0}/${po.pdf_files || 0}；MC 映射 ${mc.mapped_rows || 0} 行，未解析映射 ${mc.unresolved_rows || 0} 行`;
+    showToast('success', `Step 2 核查完成：${result.status || 'REVIEW_REQUIRED'}`);
+    loadTimesheetReview();
+  } else {
+    if (status) status.textContent = '核查失败';
+    showToast('error', result?.error || 'Step 2 核查失败');
+  }
+}
+
+async function bulkApproveTimesheets() {
+  const project = document.getElementById('reviewProject')?.value || 'CNTS-25165';
+  const month = timesheetReviewOptions.scope?.month || '';
+  const preview = await apiPost('/api/timesheets/review/bulk-approve', { project, month, confirm: false }, 120000);
+  if (!preview?.ok) {
+    showToast('error', preview?.error || '无法计算一键确认范围');
+    return;
+  }
+  if (!preview.ready_count) {
+    showToast('info', `当前没有可一键确认的记录；${preview.skipped_count || 0} 条仍需人工审核`);
+    return;
+  }
+  const confirmed = window.confirm(`当前审核月份 ${preview.scope?.month || month} 有 ${preview.ready_count} 条记录已自动匹配人员、Level、客户日费率、PO 和工时。确认一键入账？\n\n异常或未匹配记录不会被确认。`);
+  if (!confirmed) return;
+  const result = await apiPost('/api/timesheets/review/bulk-approve', { project, month, confirm: true }, 180000);
+  if (result?.ok) {
+    showToast('success', `一键确认完成：已入账 ${result.approved_count || 0} 条，跳过 ${result.skipped_count || 0} 条`);
+    loadTimesheetReview();
+  } else {
+    showToast('error', result?.error || '一键确认失败');
+  }
+}
+
+async function approveTimesheet(candidateId) {
+  const project = document.getElementById('reviewProject')?.value || 'CNTS-25165';
+  const name = document.getElementById(`rv-name-${candidateId}`).value.trim();
+  const level = document.getElementById(`rv-level-${candidateId}`).value.trim();
+  const month = document.getElementById(`rv-period-${candidateId}`).value.trim();
+  const po = document.getElementById(`rv-po-${candidateId}`).value.trim();
+  const hours = document.getElementById(`rv-hours-${candidateId}`).value.trim();
+  const rate = document.getElementById(`rv-rate-${candidateId}`).value.trim();
+  if (!name || !level || !month || !po || !hours || !rate) {
+    showToast('error', '请填写姓名、Level、月份、PO、工时和客户日费率');
+    return;
+  }
+  const result = await apiPost(`/api/timesheets/review/${candidateId}`, {
+    project, person_key:name, level, month, po_id:po,
+    hours:Number(hours), customer_day_rate:Number(rate),
+  });
+  if (result?.ok) {
+    showToast('success', '已确认并写入正式工时事实');
+    loadTimesheetReview();
+  } else {
+    showToast('error', result?.error || '确认失败');
+  }
+}
+
 // ============================================================
 // Search
 // ============================================================
@@ -1011,11 +2134,19 @@ function doSearch(query) {
   if (items.length === 0) {
     results.innerHTML = '<div class="search-result-item" style="color:var(--text-secondary);">未找到匹配结果</div>';
   } else {
-    results.innerHTML = items.slice(0, 10).map(item => `
-      <div class="search-result-item" onclick="${item.action ? 'item.action()' : ''};document.getElementById('searchResults').classList.remove('show');">
+    results.innerHTML = items.slice(0, 10).map((item, idx) => `
+      <div class="search-result-item" data-search-idx="${idx}">
         <span class="tag ${item.tagClass}">${item.tag}</span> ${escapeHtml(item.text)}
       </div>
     `).join('');
+    // 使用事件委托绑定点击
+    results.querySelectorAll('.search-result-item').forEach((el, idx) => {
+      el.addEventListener('click', () => {
+        const item = items[idx];
+        if (item && item.action) item.action();
+        results.classList.remove('show');
+      });
+    });
   }
   results.classList.add('show');
 }
@@ -1044,12 +2175,14 @@ async function doTranslate() {
 // ============================================================
 function showToast(type, message) {
   const toast = document.getElementById('toast');
+  if (!toast) return;
   toast.className = `toast toast-${type} show`;
   toast.textContent = message;
-  setTimeout(() => toast.classList.remove('show'), 3000);
+  setTimeout(() => { try { toast.classList.remove('show'); } catch(e) {} }, 3000);
 }
 
 function escapeHtml(str) {
+  if (!str) return '';
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
@@ -1059,6 +2192,1039 @@ function escapeHtml(str) {
 document.getElementById('editModal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
+
+// ========== Budget Report API ==========
+
+// ---- Page Init ----
+let budgetProjectList = [];
+let budgetCurrentProject = '';
+
+async function loadBudgetReportPage() {
+  if (budgetProjectList.length === 0) {
+    budgetProjectList = await loadProjectList();
+  }
+  const sel1 = document.getElementById('budgetProject');
+  const sel2 = document.getElementById('monthlyProject');
+  const html = '<option value="">选择项目...</option>' +
+    budgetProjectList.map(p => `<option value="${p.code}">${p.code} - ${p.name}</option>`).join('');
+  if (sel1) sel1.innerHTML = html;
+  if (sel2) sel2.innerHTML = html;
+}
+
+// ---- Step 1: Project Selection ----
+async function loadProjectList() {
+  const data = await apiGet('/api/po/projects');
+  return (data && data.projects) ? data.projects : [];
+}
+
+function onProjectChange() {
+  const sel = document.getElementById('budgetProject');
+  budgetCurrentProject = sel.value;
+  const infoDiv = document.getElementById('projectInfo');
+  const btnUsage = document.getElementById('btn-usage-status');
+  if (budgetCurrentProject) {
+    const proj = budgetProjectList.find(p => p.code === budgetCurrentProject);
+    infoDiv.textContent = proj ? `${proj.name}` : '';
+    if (btnUsage) btnUsage.style.display = (budgetCurrentProject === 'CNTS-25165') ? 'inline-block' : 'none';
+    autoOpenStep('step2');
+  } else {
+    infoDiv.textContent = '';
+    if (btnUsage) btnUsage.style.display = 'none';
+  }
+}
+
+// ---- Step Panels ----
+function toggleStep(stepId) {
+  const panel = document.getElementById(stepId);
+  if (panel) panel.classList.toggle('open');
+}
+
+function autoOpenStep(stepId) {
+  const panel = document.getElementById(stepId);
+  if (panel && !panel.classList.contains('open')) panel.classList.add('open');
+}
+
+// ---- Step 2: PO Input ----
+let currentPOInputMode = 'manual';
+
+async function loadLevelOptions() {
+  const data = await apiGet('/api/po/levels');
+  return (data && data.levels) ? data.levels : [];
+}
+
+function switchPOInputMode(mode, btn) {
+  currentPOInputMode = mode;
+  document.querySelectorAll('#step2 .mode-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('poManualInput').style.display = (mode === 'manual') ? 'block' : 'none';
+  document.getElementById('poPdfInput').style.display = (mode === 'pdf') ? 'block' : 'none';
+}
+
+async function addLevelRow() {
+  const levels = await loadLevelOptions();
+  const id = Date.now();
+  const container = document.getElementById('levelRows');
+  const row = document.createElement('div');
+  row.className = 'level-row';
+  row.id = 'levelRow' + id;
+  const levelOpts = levels.map(l => `<option value="${l}">${l}</option>`).join('');
+  row.innerHTML = `<select class="level-select" style="min-width:180px;">${levelOpts}</select>
+    <input type="number" class="level-days" placeholder="天数" min="1" style="width:80px;" oninput="updateLevelAmount(this)">
+    <input type="number" class="level-price" placeholder="单价" min="0" style="width:90px;" oninput="updateLevelAmount(this)">
+    <span class="level-amount">¥0</span>
+    <button class="btn btn-outline btn-sm" onclick="removeLevelRow(this)" title="删除">&times;</button>`;
+  container.appendChild(row);
+}
+
+function removeLevelRow(btn) {
+  const row = btn.closest('.level-row');
+  if (row) {
+    const container = document.getElementById('levelRows');
+    if (container.children.length > 1) row.remove();
+  }
+}
+
+function updateLevelAmount(input) {
+  const row = input.closest('.level-row');
+  const daysEl = row.querySelector('.level-days');
+  const priceEl = row.querySelector('.level-price');
+  const amountEl = row.querySelector('.level-amount');
+  const days = parseFloat(daysEl.value) || 0;
+  const price = parseFloat(priceEl.value) || 0;
+  amountEl.textContent = '¥' + (days * price).toLocaleString();
+}
+
+function onAllocModeChange() {
+  // just update the radio state, used when saving
+}
+
+async function savePOConfig() {
+  if (!budgetCurrentProject) { showToast('error', '请先在 Step 1 选择项目'); return; }
+  const poId = document.getElementById('poIdInput').value.trim();
+  if (!poId) { showToast('error', '请输入 PO ID'); return; }
+
+  const levels = [];
+  document.querySelectorAll('#levelRows .level-row').forEach(row => {
+    const lv = row.querySelector('.level-select').value;
+    const days = parseFloat(row.querySelector('.level-days').value) || 0;
+    const price = parseFloat(row.querySelector('.level-price').value) || 0;
+    if (lv && days > 0) {
+      levels.push({level: lv, days_quota: days, unit_price: price, value_rmb: days * price});
+    }
+  });
+  if (levels.length === 0) { showToast('error', '请至少添加一个 Level 配额'); return; }
+
+  const allocationMode = document.querySelector('input[name="allocMode"]:checked')?.value || 'usage';
+  const body = {
+    po_id: poId,
+    project: budgetCurrentProject,
+    allocation_mode: allocationMode,
+    start_month: document.getElementById('poStartInput').value.trim() || '',
+    end_month: document.getElementById('poEndInput').value.trim() || '',
+    priority: parseInt(document.getElementById('poPriorityInput').value) || 1,
+    levels: levels,
+  };
+
+  const btn = document.getElementById('btn-save-po');
+  const spinner = document.getElementById('spinner-save-po');
+  btn.disabled = true;
+  spinner.style.display = 'inline';
+  const result = await apiPost('/api/po/save-config', body, 30000);
+  btn.disabled = false;
+  spinner.style.display = 'none';
+  if (result && result.ok) {
+    showToast('success', `PO ${poId} 已保存 (${result.rows_added} Levels)`);
+    autoOpenStep('step3');
+  } else {
+    showToast('error', '保存失败: ' + (result?.error || '未知错误'));
+  }
+}
+
+// ---- PDF Upload ----
+async function uploadPOFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('pdfFileName').textContent = file.name;
+  const spinner = document.getElementById('spinner-pdf-parse');
+  spinner.style.display = 'inline';
+
+  const formData = new FormData();
+  formData.append('file', file);
+  try {
+    const resp = await fetch('/api/po/parse-pdf', { method: 'POST', body: formData });
+    const data = await resp.json();
+    spinner.style.display = 'none';
+    const resultDiv = document.getElementById('pdfParseResult');
+    if (data.ok && data.level_quotas) {
+      document.getElementById('poIdInput').value = data.po_number || '';
+      const container = document.getElementById('levelRows');
+      container.innerHTML = '';
+      await addLevelRow();
+      if (data.level_quotas.length > 0) {
+        const first = data.level_quotas[0];
+        const row = container.querySelector('.level-row');
+        if (row) {
+          const sel = row.querySelector('.level-select');
+          const daysEl = row.querySelector('.level-days');
+          const priceEl = row.querySelector('.level-price');
+          if (sel && first.level) {
+            const levels = await loadLevelOptions();
+            for (const opt of sel.options) {
+              if (opt.value === first.level) { opt.selected = true; break; }
+            }
+          }
+          if (daysEl) daysEl.value = first.qty_days || '';
+          if (priceEl) priceEl.value = first.unit_price || '';
+          updateLevelAmount(row.querySelector('input'));
+        }
+        for (let i = 1; i < data.level_quotas.length; i++) {
+          await addLevelRow();
+          const rows = container.querySelectorAll('.level-row');
+          const lastRow = rows[rows.length - 1];
+          const q = data.level_quotas[i];
+          const sel = lastRow.querySelector('.level-select');
+          if (sel && q.level) {
+            const levels = await loadLevelOptions();
+            for (const opt of sel.options) {
+              if (opt.value === q.level) { opt.selected = true; break; }
+            }
+          }
+          lastRow.querySelector('.level-days').value = q.qty_days || '';
+          lastRow.querySelector('.level-price').value = q.unit_price || '';
+          updateLevelAmount(lastRow.querySelector('input'));
+        }
+      }
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = `<strong>PO:</strong> ${data.po_number} | <strong>Total:</strong> ¥${(data.total_excl_vat||0).toLocaleString()} | ${data.level_quotas.length} Levels 已识别。请检查后点击"保存 PO 配置"。`;
+      showToast('success', 'PO PDF 识别成功');
+      switchPOInputMode('manual', document.querySelector('#step2 .mode-tab'));
+    } else {
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = `<span style="color:var(--danger);">识别失败: ${data.error || data.hint || '无法识别的 PO PDF'}</span>`;
+      showToast('error', 'PDF 识别失败');
+    }
+  } catch (e) {
+    spinner.style.display = 'none';
+    showToast('error', '上传失败: ' + (e.message || e));
+  }
+}
+
+// ---- Travel invoice review ----
+function showTravelInvoiceFileNames() {
+  const input = document.getElementById('travelInvoiceFiles');
+  const target = document.getElementById('travelInvoiceFileNames');
+  const names = Array.from(input.files || []).map(file => file.name);
+  const manifest = document.getElementById('travelCorrectionManifest')?.files?.[0];
+  const claim = document.getElementById('travelClaimWorkbook')?.files?.[0];
+  const parts = names.length ? [`差旅文件 ${names.length} 个：${names.join('、')}`] : [];
+  if (claim) parts.push(`报销明细：${claim.name}`);
+  if (manifest) parts.push(`人工动作清单：${manifest.name}`);
+  target.textContent = parts.join('；');
+}
+
+function renderTravelReocrAmountRisk(page, sourceSha256, candidates) {
+  const state = travelInvoiceOcrComparisonState;
+  const sourceHash = String(sourceSha256 || '').toLowerCase();
+  if (!sourceHash || !state || !Array.isArray(state.input_coverage) || !Array.isArray(state.trips)) return '';
+
+  const source = state.input_coverage.find(item => String(item.source_sha256 || '').toLowerCase() === sourceHash);
+  if (!source) return '';
+  const trip = state.trips.find(item => item.file === source.file);
+  if (!trip || !Array.isArray(trip.expenses)) return '';
+  const expenses = trip.expenses.filter(item => Number(item.source_page || 0) === Number(page));
+  if (expenses.length !== 1 || expenses[0].amount == null || !Number.isFinite(Number(expenses[0].amount))) return '';
+
+  const mainAmount = Number(expenses[0].amount);
+  const localAmounts = new Map();
+  for (const candidate of (candidates || [])) {
+    for (const evidence of (candidate.amount_evidence || [])) {
+      if (evidence.field_type !== 'total_or_paid' || evidence.value_text == null) continue;
+      const value = Number(String(evidence.value_text).replace(/,/g, ''));
+      if (!Number.isFinite(value) || value <= 0 || Math.abs(value - mainAmount) <= 0.01) continue;
+      const amountKey = value.toFixed(2);
+      if (!localAmounts.has(amountKey)) localAmounts.set(amountKey, candidate.method || '局部 OCR');
+    }
+  }
+  if (!localAmounts.size) return '';
+
+  const comparisons = Array.from(localAmounts, ([amount, method]) =>
+    `${escapeHtml(method)} ¥${amount}`
+  ).join('、');
+  return `<div style="margin:4px 0;padding:6px 8px;border-left:3px solid var(--warning);background:#fff8e8;color:#805600;">金额复核风险：主识别费用 ¥${mainAmount.toFixed(2)}；局部 OCR 的实收/价税合计线索为 ${comparisons}。金额不一致，请对照票面确认；系统未自动修改费用。</div>`;
+}
+
+async function reocrTravelPages() {
+  const files = Array.from(document.getElementById('travelInvoiceFiles').files || []);
+  const pagesInput = document.getElementById('travelReocrPages');
+  const resultDiv = document.getElementById('travelReocrResult');
+  const button = document.getElementById('btn-travel-reocr');
+  const spinner = document.getElementById('spinner-travel-reocr');
+  if (files.length !== 1 || !/\.pdf$/i.test(files[0].name)) {
+    showToast('error', '局部重识别请只选择一个 PDF 文件');
+    return;
+  }
+  const pageTokens = pagesInput.value.split(',').map(value => value.trim()).filter(Boolean);
+  if (!pageTokens.length || pageTokens.some(value => !/^\d+$/.test(value))) {
+    showToast('error', '请输入页码，例如 5,8,10');
+    return;
+  }
+  const pages = Array.from(new Set(pageTokens.map(Number)));
+  if (pages.some(value => value < 1) || pages.length > 3) {
+    showToast('error', '页码从 1 开始，一次最多重识别 3 页');
+    return;
+  }
+
+  button.disabled = true;
+  spinner.style.display = 'inline';
+  resultDiv.style.display = 'none';
+  resultDiv.innerHTML = '';
+  const form = new FormData();
+  form.append('file', files[0]);
+  form.append('pages', pages.join(','));
+  const includePaddle = document.getElementById('travelReocrPaddle')?.checked === true;
+  if (includePaddle) form.append('paddle', '1');
+  try {
+    const response = await fetchWithTimeout(
+      '/api/travel/invoice-review/reocr', { method: 'POST', body: form }, includePaddle ? 900000 : 600000,
+    );
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || !data.ok) throw new Error(data.error || `HTTP ${response.status}`);
+    const cache = data.cache || {};
+    const cacheSummary = `Tesseract 持久缓存命中 ${Number(cache.hits || 0)} 页 · 本次重识别 ${Number(cache.misses || 0)} 页 · 新缓存 ${Number(cache.stored || 0)} 页`;
+    const paddleCache = data.paddle?.cache;
+    const paddleSummary = data.paddle
+      ? `<div style="font-size:11px;margin:5px 0;">PaddleOCR ${escapeHtml(data.paddle.model || '')} · 缓存命中 ${Number(paddleCache?.hits || 0)} 页 · 本次推理 ${Number(paddleCache?.misses || 0)} 页 · 新缓存 ${Number(paddleCache?.stored || 0)} 页 · 耗时 ${Number(data.paddle.elapsed_ms || 0).toFixed(0)} ms</div>`
+      : '';
+    const cacheWarnings = (data.cache_warnings || []).length
+      ? `<div style="color:var(--warning);">${escapeHtml(data.cache_warnings.join('；'))}</div>` : '';
+    const cacheStatusNames = {
+      HIT: '缓存命中',
+      MISS_STORED: '本次识别后已缓存',
+      MISS_NOT_CACHEABLE: '本次识别结果不完整，未缓存',
+      MISS_WRITE_FAILED: '本次识别成功，但缓存写入失败',
+      MISS_FAILED_NOT_CACHED: '识别失败，未缓存；下次会重试',
+    };
+    const pageRows = (data.pages || []).map(page => {
+      const candidates = (page.candidates || []).map(candidate => {
+        const confidence = candidate.confidence == null
+          ? '未提供' : `${(Number(candidate.confidence) * 100).toFixed(1)}%`;
+        const blocks = (candidate.blocks || []).map(block => {
+          const box = (block.bbox_normalized || []).map(value => Number(value).toFixed(3)).join(', ');
+          const blockConfidence = block.confidence == null ? '' : ` · ${Math.round(Number(block.confidence) * 100)}%`;
+          return `<li>${escapeHtml(block.text)} <small>[${escapeHtml(box)}]${blockConfidence}</small></li>`;
+        }).join('');
+        const truncation = candidate.blocks_truncated ? '（仅显示前 300 个定位框）' : '';
+        const regionBox = (candidate.region_bbox_normalized || []).map(value => Number(value).toFixed(3)).join(', ');
+        const regionLabel = candidate.region_name === 'paddle_lower_page_receipts_red_channel'
+          ? 'PaddleOCR 页面下部区域（红色通道）'
+          : (candidate.region_name === 'paddle_lower_page_receipts'
+            ? 'PaddleOCR 页面下部区域（原彩图）' : (candidate.region_name ? 'Tesseract 下半页票据区域' : ''));
+        const candidateCache = candidate.cache_status === 'HIT' ? ' · Paddle 缓存命中'
+          : (candidate.cache_status === 'MISS_STORED' ? ' · Paddle 新结果已缓存' : '');
+        const regionSummary = regionLabel
+          ? `区域候选 · ${regionLabel} [${regionBox}]${candidateCache} · ` : '';
+        const preprocessingLabel = candidate.preprocessing
+          ? ` · ${escapeHtml(candidate.preprocessing)}` : '';
+        const warning = (candidate.warnings || []).length
+          ? `<div style="color:var(--warning);">${escapeHtml(candidate.warnings.join('；'))}</div>` : '';
+        const fieldNames = {total_amount:'含税总额',net_amount:'不含税金额',tax_amount:'税额',currency:'币种',expense_type:'类别',invoice_date:'开票日期',travel_date_from:'服务开始日期',travel_date_to:'服务结束日期',vendor:'开票公司',invoice_number:'发票号码'};
+        const invoiceCandidates = (candidate.invoice_candidates || []).map(invoice => {
+          const fields = (invoice.fields || []).map(field => {
+            const value = field.value == null ? '未识别' : String(field.value);
+            const box = (field.bbox_normalized || []).map(item => Number(item).toFixed(3)).join(', ');
+            const dateSource = field.travel_date_source ? ` · 日期来源 ${escapeHtml(field.travel_date_source)}` : '';
+            return `<tr><td>${escapeHtml(fieldNames[field.field] || field.field)}</td><td>${escapeHtml(value)}</td><td>${escapeHtml(box || '无定位框')}${dateSource}</td><td>${escapeHtml(field.source_text || '')}</td></tr>`;
+          }).join('');
+          return `<details style="margin:5px 0;"><summary>票据候选 ${Number(invoice.candidate_index)} · ${escapeHtml(invoice.category || '类别未定')} · ${invoice.total_amount == null ? '总额未定' : `¥${Number(invoice.total_amount).toFixed(2)}`}</summary><div style="overflow:auto;"><table class="data-table"><thead><tr><th>字段</th><th>候选值</th><th>定位</th><th>识别依据</th></tr></thead><tbody>${fields || '<tr><td colspan="4">没有关联字段</td></tr>'}</tbody></table></div><small>字段候选只做提示；页级类别/金额不一定代表一张独立发票。</small></details>`;
+        }).join('');
+        const amountEvidenceRows = (candidate.amount_evidence || []).map(evidence => {
+          const typeNames = {total_or_paid:'实收/价税合计标签',tax:'税额标签',fare:'车费标签',amount_label:'金额标签（含义未定）',unlabelled_amount:'未关联标签的金额文本'};
+          const associationNames = {same_block:'同一文字块',same_row:'与标签同行',currency_token_only:'货币符号/元字样',label_without_nearby_value:'标签附近无金额值'};
+          const labels = (evidence.labels || []).join(' / ') || '未关联标签';
+          const box = (evidence.bbox_normalized || []).map(value => Number(value).toFixed(3)).join(', ');
+          const value = evidence.value_text == null ? '未识别到金额值' : evidence.value_text;
+          const source = evidence.source_text || '';
+          return `<tr><td>${escapeHtml(typeNames[evidence.field_type] || evidence.field_type || '金额线索')}</td><td>${escapeHtml(labels)}</td><td>${escapeHtml(value)}</td><td>${escapeHtml(associationNames[evidence.association] || evidence.association || '')}</td><td>${escapeHtml(box || '无定位框')}</td><td>${escapeHtml(source)}</td></tr>`;
+        }).join('');
+        const amountEvidencePanel = amountEvidenceRows
+          ? `<details style="margin:5px 0;"><summary>金额文字块线索 ${Number((candidate.amount_evidence || []).length)} 条（不自动选择报销总额）</summary><div style="overflow:auto;"><table class="data-table"><thead><tr><th>线索类型</th><th>票面标签</th><th>识别金额文本</th><th>关联方式</th><th>定位</th><th>原始文字</th></tr></thead><tbody>${amountEvidenceRows}</tbody></table></div></details>`
+          : '';
+        return `<details style="margin:5px 0;"><summary>${regionSummary}${escapeHtml(candidate.method)}${preprocessingLabel} · ${Number(candidate.elapsed_ms || 0).toFixed(0)} ms · 平均置信度 ${confidence} · ${Number(candidate.block_count || 0)} 个文字块</summary>${warning}<pre style="max-height:220px;overflow:auto;white-space:pre-wrap;font-size:11px;background:var(--bg);padding:8px;">${escapeHtml(candidate.text || '未识别到文字')}</pre>${invoiceCandidates}${amountEvidencePanel}<details><summary>查看文字定位框${truncation}</summary><ul style="max-height:180px;overflow:auto;font-size:10px;padding-left:22px;">${blocks || '<li>无定位框</li>'}</ul></details></details>`;
+      }).join('');
+      const error = page.error ? `<div style="color:var(--danger);">${escapeHtml(page.error)}</div>` : '';
+      const cacheStatus = cacheStatusNames[page.cache_status] || page.cache_status || '未缓存';
+      const originalOcrTime = page.ocr_elapsed_ms == null ? '' : ` · 原 OCR ${Number(page.ocr_elapsed_ms).toFixed(0)} ms`;
+      const amountRisk = renderTravelReocrAmountRisk(page.page, data.source_sha256, page.candidates || []);
+      return `<li><strong>第 ${Number(page.page)} 页</strong> · ${Number(page.elapsed_ms || 0).toFixed(0)} ms · ${escapeHtml(cacheStatus)}${originalOcrTime} · 候选最优 ${escapeHtml(page.best_method || '无')} ${error}${amountRisk}${candidates}</li>`;
+    }).join('');
+    const maxCacheMb = Number(cache.max_bytes || 0) > 0 ? Math.round(Number(cache.max_bytes) / 1024 / 1024) : 0;
+    resultDiv.innerHTML = `<div style="padding:10px;background:#f5f8ff;border:1px solid var(--border);border-radius:6px;"><strong>局部 OCR 复读结果（仅供复核，不自动写入费用）</strong><div style="font-size:11px;margin:5px 0;word-break:break-all;">SHA-256：${escapeHtml(data.source_sha256 || '')} · ${escapeHtml(data.engine || '')} · ${Number(data.dpi || 0)} DPI · 总耗时 ${Number(data.elapsed_ms || 0).toFixed(0)} ms</div><div style="font-size:11px;margin:5px 0;">${escapeHtml(cacheSummary)} · 最多保留 ${Number(cache.max_entries || 0)} 条 / ${maxCacheMb} MB、${Number(cache.max_age_days || 90)} 天未访问</div>${paddleSummary}${cacheWarnings}<ul style="font-size:11px;padding-left:22px;">${pageRows}</ul><div style="font-size:10px;color:var(--text-secondary);">定位框坐标为页面的归一化比例，左上/右下坐标顺序。缓存只保留 OCR 文字和定位证据，不保留 PDF 图像。</div></div>`;
+    resultDiv.style.display = 'block';
+  } catch (error) {
+    resultDiv.innerHTML = `<div style="padding:10px;background:#fff4f2;border:1px solid #efb7af;border-radius:6px;color:var(--danger);white-space:pre-wrap;">局部重识别失败：${escapeHtml(error.message || String(error))}</div>`;
+    resultDiv.style.display = 'block';
+  } finally {
+    button.disabled = false;
+    spinner.style.display = 'none';
+  }
+}
+
+function renderTravelCorrectionReview(data) {
+  if (!data.review_token || !Array.isArray(data.trips) || data.trips.length !== 1) return '';
+  const sourceHash = data.input_coverage?.find(item => item.source_sha256)?.source_sha256 || '';
+  const categoryNames = {ticket:'机票/火车',taxi:'打车/市内交通',accommodation:'住宿',special:'打车/市内交通'};
+  const fields = data.trips.map((trip, tripIndex) => {
+    return (trip.structured_invoices || []).map((invoice, invoiceIndex) => {
+      const page = Number(invoice.source?.page || 0);
+      const amount = invoice.total_amount == null ? null : Number(invoice.total_amount);
+      const matches = (trip.expenses || []).filter(expense =>
+        Number(expense.source_page || 0) === page
+        && expense.category === invoice.expense_type
+        && amount != null
+        && Math.abs(Number(expense.amount) - amount) <= 0.01
+      );
+      const expense = matches.length === 1 ? matches[0] : null;
+      if (!page || !expense) {
+        return `<div style="padding:8px;border-bottom:1px solid var(--border);">第 ${page || '未知'} 页 · ${escapeHtml(categoryNames[invoice.expense_type] || invoice.expense_type || '类别未定')} · ¥${amount == null ? '金额未知' : amount.toFixed(2)}：Expense 与票据不能唯一关联，当前不提供字段写回。</div>`;
+      }
+      const input = (field, label, value, type = 'text', step = '') =>
+        `<label style="font-size:11px;color:var(--text-secondary);">${label}<input data-review-field="${field}" type="${type}" value="${escapeHtml(value == null ? '' : String(value))}" ${step ? `step="${step}"` : ''} style="display:block;width:100%;padding:5px 7px;border:1px solid var(--border);border-radius:4px;margin-top:3px;"></label>`;
+      const categories = Object.entries(categoryNames).filter(([value]) => value !== 'special').map(([value, label]) =>
+        `<option value="${value}" ${invoice.expense_type === value ? 'selected' : ''}>${label}</option>`
+      ).join('');
+      const currencyOptions = Array.from(new Set(['CNY','USD','EUR','GBP','JPY',invoice.currency].filter(Boolean)));
+      const currencies = currencyOptions.map(value =>
+        `<option value="${value}" ${invoice.currency === value ? 'selected' : ''}>${value}</option>`
+      ).join('');
+      const dateFrom = invoice.travel_date_from || '';
+      const dateTo = invoice.travel_date_to || '';
+      return `<div class="travel-correction-card" data-trip-index="${tripIndex}" data-invoice-index="${invoiceIndex}" data-page="${page}" style="padding:9px;border-bottom:1px solid var(--border);">
+        <div style="font-weight:600;margin-bottom:7px;">第 ${page} 页 · 当前 ${escapeHtml(categoryNames[invoice.expense_type] || invoice.expense_type || '类别未定')} · 含税总额 ¥${amount == null ? '未识别' : amount.toFixed(2)} · 校验 ${escapeHtml(invoice.validation?.status || '待复核')}</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:7px;">
+          ${input('vendor','开票公司',invoice.vendor)}
+          ${input('invoice_number','发票号码',invoice.invoice_number)}
+          ${input('invoice_date','开票日期',invoice.invoice_date,'date')}
+          <label style="font-size:11px;color:var(--text-secondary);">币种<select data-review-field="currency" style="display:block;width:100%;padding:5px 7px;border:1px solid var(--border);border-radius:4px;margin-top:3px;">${currencies}</select></label>
+          ${input('net_amount','不含税金额',invoice.net_amount,'number','0.01')}
+          ${input('tax_amount','税额',invoice.tax_amount,'number','0.01')}
+          ${input('total_amount','含税总额',invoice.total_amount,'number','0.01')}
+          <label style="font-size:11px;color:var(--text-secondary);">费用类别<select data-review-field="expense_type" style="display:block;width:100%;padding:5px 7px;border:1px solid var(--border);border-radius:4px;margin-top:3px;">${categories}</select></label>
+        </div>
+        <label style="display:flex;gap:6px;align-items:center;font-size:11px;margin-top:8px;"><input data-review-field="confirm_service_date" type="checkbox">我已对照源票确认以下实际服务日期</label>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,220px));gap:7px;margin-top:5px;">
+          ${input('travel_date_from','实际服务开始日期',dateFrom,'date')}
+          ${input('travel_date_to','实际服务结束日期',dateTo,'date')}
+        </div>
+        ${input('reason','修正原因',`对照源 PDF 第 ${page} 页人工复核`)}
+        <small style="display:block;color:var(--text-secondary);margin-top:4px;">日期仅在勾选确认后写入。含税金额、类别及其他字段请先对照源票核实；没有改动的字段不会生成修正。</small>
+      </div>`;
+    }).join('');
+  }).join('');
+  if (!fields) return '';
+  return `<details open style="margin-top:12px;padding:9px;border:1px solid var(--border);border-radius:6px;"><summary style="font-weight:600;cursor:pointer;">逐票字段复核与修正（${(data.trips[0].structured_invoices || []).length} 张）</summary><p style="font-size:11px;color:var(--text-secondary);">以下值来自当前解析基线。请对照源 PDF 确认后再改动。确认会把修正应用到本次内存中的解析结果，不重新运行整包 OCR；修正记录会与工作簿一起保存为 JSON 审计文件。复核会话 30 分钟后失效。</p><div style="font-size:10px;word-break:break-all;margin-bottom:7px;">源 PDF SHA-256：${escapeHtml(sourceHash)}</div>${fields}<button class="btn btn-primary btn-sm" type="button" onclick="applyTravelCorrections()" style="margin-top:8px;">确认修正并重导出审核表</button><div id="travelCorrectionApplyResult" style="margin-top:8px;"></div></details>`;
+}
+
+function collectTravelCorrections() {
+  const corrections = [];
+  const cards = Array.from(document.querySelectorAll('#travelInvoiceResult .travel-correction-card'));
+  const state = travelInvoiceReviewState;
+  if (!state?.trips?.length) return corrections;
+  const addField = (target, key, expected, rawValue, type, sourceText) => {
+    let value = rawValue;
+    if (type === 'number') {
+      if (rawValue === '') return;
+      value = Number(rawValue);
+      if (!Number.isFinite(value)) throw new Error(`${key} 必须是有效数字`);
+      value = Math.round(value * 100) / 100;
+    } else if (type === 'date') {
+      if (!rawValue) return;
+      value = rawValue;
+    }
+    if (String(value ?? '') === String(expected ?? '')) return;
+    target[key] = {expected_current: expected, value, source_text: sourceText};
+  };
+  for (const card of cards) {
+    const tripIndex = Number(card.dataset.tripIndex);
+    const invoiceIndex = Number(card.dataset.invoiceIndex);
+    const trip = state.trips[tripIndex];
+    const invoice = trip?.structured_invoices?.[invoiceIndex];
+    if (!invoice || invoice.total_amount == null) continue;
+    const page = Number(card.dataset.page);
+    const originalAmount = Number(invoice.total_amount);
+    const expenseMatches = (trip.expenses || []).filter(expense =>
+      Number(expense.source_page || 0) === page
+      && expense.category === invoice.expense_type
+      && Math.abs(Number(expense.amount) - originalAmount) <= 0.01
+    );
+    if (expenseMatches.length !== 1) throw new Error(`第 ${page} 页无法唯一关联 Expense，未提交修正`);
+    const expense = expenseMatches[0];
+    const value = field => card.querySelector(`[data-review-field="${field}"]`)?.value ?? '';
+    const structuredFields = {};
+    const expenseFields = {};
+    const sourceText = `人工对照源 PDF 第 ${page} 页确认`;
+    addField(structuredFields, 'vendor', invoice.vendor || '', value('vendor'), 'text', sourceText);
+    addField(structuredFields, 'invoice_number', invoice.invoice_number || '', value('invoice_number'), 'text', sourceText);
+    addField(structuredFields, 'invoice_date', invoice.invoice_date, value('invoice_date'), 'date', sourceText);
+    addField(structuredFields, 'currency', invoice.currency, value('currency'), 'text', sourceText);
+    addField(structuredFields, 'net_amount', invoice.net_amount, value('net_amount'), 'number', sourceText);
+    addField(structuredFields, 'tax_amount', invoice.tax_amount, value('tax_amount'), 'number', sourceText);
+    const newAmount = value('total_amount');
+    if (!newAmount || Number(newAmount) <= 0) throw new Error(`第 ${page} 页含税总额必须大于 0`);
+    addField(structuredFields, 'total_amount', invoice.total_amount, newAmount, 'number', sourceText);
+    addField(structuredFields, 'expense_type', invoice.expense_type, value('expense_type'), 'text', sourceText);
+    addField(expenseFields, 'amount', expense.amount, newAmount, 'number', sourceText);
+    addField(expenseFields, 'category', expense.category, value('expense_type'), 'text', sourceText);
+
+    const confirmDate = Boolean(card.querySelector('[data-review-field="confirm_service_date"]')?.checked);
+    if (confirmDate) {
+      const from = value('travel_date_from');
+      const to = value('travel_date_to');
+      if (!from || !to || from > to) throw new Error(`第 ${page} 页服务日期需填写有效的起止日期`);
+      structuredFields.travel_date_from = {expected_current: invoice.travel_date_from, value: from, source_text: sourceText};
+      structuredFields.travel_date_to = {expected_current: invoice.travel_date_to, value: to, source_text: sourceText};
+      expenseFields.start = {expected_current: expense.start, value: from, source_text: sourceText};
+      expenseFields.end = {expected_current: expense.end, value: to, source_text: sourceText};
+    }
+    if (!Object.keys(structuredFields).length && !Object.keys(expenseFields).length) continue;
+    const reason = value('reason').trim();
+    if (!reason) throw new Error(`请填写第 ${page} 页修正原因`);
+    corrections.push({
+      record_id: `WB-T${tripIndex + 1}-P${page}-I${invoiceIndex + 1}`,
+      invoice_match: {page, expense_type: invoice.expense_type, original_total_amount: originalAmount},
+      structured_fields: structuredFields,
+      expense_fields: expenseFields,
+      confirm_service_date: confirmDate,
+      service_date_evidence_page: page,
+      evidence_location: `源 PDF 第 ${page} 页`,
+      reason,
+    });
+  }
+  return corrections;
+}
+
+async function applyTravelCorrections() {
+  const state = travelInvoiceReviewState;
+  const output = document.getElementById('travelCorrectionApplyResult');
+  if (!state?.review_token) {
+    showToast('error', '复核会话已失效，请重新预览');
+    return;
+  }
+  let corrections;
+  try {
+    corrections = collectTravelCorrections();
+    if (!corrections.length) throw new Error('没有字段发生变化；如需出表，请使用“识别并生成审核表”');
+  } catch (error) {
+    showToast('error', error.message || String(error));
+    return;
+  }
+  const button = document.querySelector('#travelInvoiceResult button[onclick="applyTravelCorrections()"]');
+  if (button) button.disabled = true;
+  output.textContent = '正在应用复核修正并重新映射…';
+  try {
+    const response = await fetch('/api/travel/invoice-review/apply-corrections', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({review_token: state.review_token, corrections}),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok && response.status !== 207) throw new Error(data.error || `HTTP ${response.status}`);
+    const download = data.download_url ? `<a class="btn btn-primary btn-sm" href="${escapeHtml(data.download_url)}">下载修正后的审核表</a>` : '';
+    const auditDownload = data.review_audit_url ? `<a class="btn btn-outline btn-sm" href="${escapeHtml(data.review_audit_url)}" style="margin-left:5px;">下载修正审计 JSON</a>` : '';
+    output.innerHTML = `<div style="padding:8px;background:${data.ready_for_use ? '#edf8f0' : '#fff8e7'};border:1px solid var(--border);border-radius:5px;"><strong>${data.ready_for_use ? '修正已应用，审核表可直接使用' : '修正已应用，工作簿仍需复核'}</strong><div style="font-size:11px;margin:4px 0;">已应用 ${Number((data.applied_corrections || []).length)} 条字段修正 · ${escapeHtml(data.output_name || '')}</div><div style="font-size:11px;word-break:break-all;">审计 JSON：${escapeHtml(data.review_audit_path || '')}</div>${download}${auditDownload}</div>`;
+    if (button) button.disabled = true;
+    state.review_token = null;
+  } catch (error) {
+    output.innerHTML = `<div style="color:var(--danger);white-space:pre-wrap;">修正未完成：${escapeHtml(error.message || String(error))}</div>`;
+    if (button) button.disabled = false;
+  }
+}
+
+async function reviewTravelInvoices(previewOnly = false) {
+  const input = document.getElementById('travelInvoiceFiles');
+  const template = document.getElementById('travelInvoiceTemplate').value.trim();
+  const outputDate = document.getElementById('travelInvoiceDate').value.trim();
+  const poNo = document.getElementById('travelInvoicePO').value.trim();
+  const resultDiv = document.getElementById('travelInvoiceResult');
+  const btn = document.getElementById('btn-travel-invoice');
+  const previewBtn = document.getElementById('btn-travel-preview');
+  const spinner = document.getElementById('spinner-travel-invoice');
+  if (!input.files || input.files.length === 0) {
+    showToast('error', '请先选择 PDF 或 DOCX 差旅材料');
+    return;
+  }
+  if (!template) {
+    showToast('error', '请填写 Excel 模板路径');
+    return;
+  }
+  btn.disabled = true;
+  previewBtn.disabled = true;
+  spinner.style.display = 'inline';
+  resultDiv.style.display = 'none';
+  resultDiv.innerHTML = '';
+  const form = new FormData();
+  Array.from(input.files).forEach(file => form.append('files', file));
+  const correctionManifest = document.getElementById('travelCorrectionManifest')?.files?.[0];
+  if (correctionManifest) form.append('correction_manifest', correctionManifest);
+  const claimWorkbook = document.getElementById('travelClaimWorkbook')?.files?.[0];
+  if (claimWorkbook) form.append('claim_workbook', claimWorkbook);
+  form.append('template_path', template);
+  form.append('output_date', outputDate);
+  form.append('po_no', poNo);
+  form.append('policy_name', document.getElementById('travelPolicySelect').value || 'VGC');
+  form.append('mode', previewOnly ? 'preview' : 'write');
+  try {
+    // Scanned PDFs need local page rendering + Tesseract and can take longer
+    // than text PDFs, especially when several files are selected.
+    const resp = await fetchWithTimeout('/api/travel/invoice-review', { method: 'POST', body: form }, 1800000);
+    const data = await resp.json().catch(() => ({}));
+    const isPartial = data.completion_status === 'PARTIAL' && data.partial_result_available === true;
+    if ((!resp.ok || !data.ok) && !isPartial) {
+      const parseErrors = (data.parse_errors || []).map(item => `${item.file}: ${item.error}`).join('\n');
+      const coverageDetails = (data.input_coverage || []).map(item => {
+        const pageIssues = (item.pages || []).filter(page => page.review_required).map(page => `第 ${page.source_page} 页 ${page.status}`).join('、');
+        return `${item.file}: ${item.status}${item.error ? `（${item.error}）` : ''}${pageIssues ? `；待复核：${pageIssues}` : ''}`;
+      }).join('\n');
+      throw new Error([data.error || `HTTP ${resp.status}`, parseErrors, coverageDetails ? `文件/页面状态：\n${coverageDetails}` : ''].filter(Boolean).join('\n'));
+    }
+    travelInvoiceReviewState = previewOnly ? data : null;
+    travelInvoiceOcrComparisonState = data;
+    const tripRows = (data.trips || []).map(trip => {
+      const total = Number(trip.expected_sum_without_tax || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      const categoryNames = {ticket: '机票/火车', taxi: '打车/市内交通', accommodation: '住宿', special: '打车/市内交通'};
+      const breakdown = Object.entries(trip.totals || {}).map(([key, value]) => `${categoryNames[key] || key} ¥${Number(value || 0).toFixed(2)}`).join('；') || '—';
+      const messages = trip.warnings || [];
+      const ocrSuccess = messages.filter(message => message.includes('OCR') && message.includes('成功识别'));
+      const reviewWarnings = messages.filter(message => !ocrSuccess.includes(message));
+      const ocrStatus = ocrSuccess.length ? `<div style="color:var(--success);">✅ ${escapeHtml(ocrSuccess.join('；'))}</div>` : '';
+      const warning = reviewWarnings.length ? `<div style="color:var(--warning);">⚠️ ${escapeHtml(reviewWarnings.join('；'))}</div>` : '';
+      const policy = trip.policy_summary || {};
+      const deliveryStatus = trip.delivery_status || data.delivery_status || 'REVIEW_DRAFT';
+      const deliveryColor = deliveryStatus === 'READY_FOR_USE' ? 'var(--success)' : 'var(--warning)';
+      const deliveryLine = `<div style="color:${deliveryColor};font-weight:600;">核对状态：${deliveryStatus === 'READY_FOR_USE' ? '通过' : '有未通过项'}</div>`;
+      const deliveryIssues = (trip.delivery_issues || []).map(item => escapeHtml(item.message || item.code || '')).filter(Boolean);
+      const deliveryReview = deliveryIssues.length ? `<small style="color:var(--warning);">${deliveryIssues.join('；')}</small>` : '';
+      const riskEntries = (trip.page_coverage || []).flatMap(page => (page.risk_flags || []).map(risk => {
+        const amount = Number(risk.amount_cny);
+        const amountLabel = Number.isFinite(amount) ? `¥${amount.toFixed(2)}：` : '';
+        return `第 ${Number(page.source_page || risk.source_page || 0)} 页 ${amountLabel}${risk.description || risk.code || '需留意'}`;
+      }));
+      const riskLine = riskEntries.length ? `<div style="color:var(--warning);margin-top:3px;">风险提示：${riskEntries.map(escapeHtml).join('<br>')}</div>` : '';
+      const allocationRows = (trip.allocation_trace || []).map(item => {
+        const actualDate = item.actual_service_start
+          ? (item.actual_service_end && item.actual_service_end !== item.actual_service_start ? `${item.actual_service_start}～${item.actual_service_end}` : item.actual_service_start)
+          : '未确认';
+        const displayDateMeaning = item.display_date_source === 'ROW_PLACEMENT_ONLY' ? '仅用于表格排布' : item.display_date_source;
+        const nights = item.category === 'accommodation' ? ` · ${Number(item.accommodation_nights || 0)} 晚 / ${item.accommodation_nights_source || '未确认晚数'}` : '';
+        const dateEvidence = item.service_date_evidence_page
+          ? ` · 日期依据第 ${Number(item.service_date_evidence_page)} 页：${escapeHtml(String(item.service_date_evidence_text || '').slice(0, 100))}`
+          : '';
+        return `<li>第 ${Number(item.source_page || 0)} 页 · ${escapeHtml(item.category || '')} · 票面 ¥${Number(item.gross_amount || 0).toFixed(2)} → 入表 ¥${Number(item.allowed_amount || 0).toFixed(2)} · 实际日期 ${escapeHtml(actualDate)} · 展示日期 ${escapeHtml(item.display_date || '')}（${escapeHtml(displayDateMeaning)}）${dateEvidence}${nights} · ${escapeHtml(item.workbook_cell || '未定位到单元格')}</li>`;
+      }).join('');
+      const allocationDetails = allocationRows ? `<details style="margin-top:3px;"><summary>逐票日期与金额映射（${(trip.allocation_trace || []).length} 条）</summary><ul style="font-size:10px;max-height:220px;overflow:auto;padding-left:22px;">${allocationRows}</ul></details>` : '';
+      const policyStatus = policy.status || 'PASS';
+      const policyColor = policyStatus === 'BLOCKED' ? 'var(--danger)' : (policyStatus === 'WARNING' ? 'var(--warning)' : 'var(--success)');
+      const hotel = policy.accommodation || {};
+      const allowance = policy.allowance || {};
+      const policyLine = `<div style="color:${policyColor};">差标 ${escapeHtml(policyStatus)} · 住宿 ¥${Number(hotel.allowed_amount || 0).toFixed(2)} / 补贴 ¥${Number(allowance.allowed_amount || 0).toFixed(2)}</div>`;
+      const policyExceptions = (trip.policy_exceptions || []).map(item => escapeHtml(item.message || item.code || '')).filter(Boolean);
+      const policyReview = policyExceptions.length ? `<details style="margin-top:3px;"><summary>规则异常 ${policyExceptions.length} 条</summary><small>${policyExceptions.join('；')}</small></details>` : '';
+      const policyTrace = (trip.policy_trace || []).map(item => {
+        const traceText = JSON.stringify(item.calculation_trace || [], null, 2);
+        return `<details style="margin-top:3px;"><summary>${escapeHtml(item.rule_id || '规则')} · ${escapeHtml(item.status || '')}</summary><pre style="max-height:180px;overflow:auto;white-space:pre-wrap;font-size:10px;">${escapeHtml(traceText)}</pre></details>`;
+      }).join('');
+      const diagnostics = `<details style="margin-top:3px;"><summary>诊断详情</summary>${riskLine}${allocationDetails}${policyLine}${policyReview}${policyTrace}${ocrStatus}${warning}</details>`;
+      const itineraryCities = Array.isArray(trip.itinerary_cities) ? trip.itinerary_cities : [];
+      const cityLabel = itineraryCities.length ? itineraryCities.join(' → ') : trip.city;
+      return `<tr><td>${escapeHtml(trip.file)}</td><td>${escapeHtml(trip.name)}</td><td>${escapeHtml(cityLabel)}</td><td>${trip.start}～${trip.end}</td><td>${trip.expense_count || 0} 条<br><small>${escapeHtml(breakdown)}</small></td><td>¥${total}</td><td>${deliveryLine}${deliveryReview}${diagnostics}</td></tr>`;
+    }).join('');
+    const claimStatusNames = {PASS: '一致', REVIEW: '有差异', NO_CLAIM: '未匹配报销单'};
+    let claimBlock = '';
+    if (data.claim_error) {
+      claimBlock = `<p style="color:var(--warning);margin-top:8px;">⚠️ 报销明细未能读取，本次未做核对：${escapeHtml(data.claim_error)}</p>`;
+    } else if (data.claim_reconciliation) {
+      const claimSummaryRows = (data.claim_reconciliation.trips || []).map(item => {
+        const claim = item.claim || {};
+        const status = claimStatusNames[item.status] || item.status;
+        const color = item.status === 'PASS' ? 'var(--success)' : 'var(--warning)';
+        const exceptions = (item.rows || []).filter(row => row.status !== 'PASS').map(row => {
+          const amount = row.amount == null ? '' : `¥${Number(row.amount).toFixed(2)}`;
+          const diff = row.difference == null ? '' : ` · 差 ${Number(row.difference).toFixed(2)}`;
+          return `<li>${row.source_page ? `第 ${Number(row.source_page)} 页 · ` : ''}${escapeHtml(row.invoice_type || '')} ${amount}${diff} · <strong>${escapeHtml(row.status_label || row.status)}</strong> · ${escapeHtml(row.risk || row.basis || '')}</li>`;
+        }).join('');
+        return `<div style="padding:6px 0;border-bottom:1px solid var(--border);"><strong>${escapeHtml(claim.claim_no || '未匹配')}</strong> · ${escapeHtml(claim.person || item.trip?.name || '')} · ${escapeHtml(item.trip?.city || '')} · ${escapeHtml(item.trip?.start || '')}～${escapeHtml(item.trip?.end || '')} · <span style="color:${color};font-weight:600;">${escapeHtml(status)}（${Number(item.exception_count || 0)} 项）</span>${exceptions ? `<ul style="margin:4px 0 0 18px;font-size:11px;">${exceptions}</ul>` : ''}</div>`;
+      }).join('');
+      claimBlock = `<div style="margin-top:10px;padding:10px;background:#f5f8fb;border:1px solid var(--border);border-radius:6px;"><strong>报销明细核对</strong><div style="font-size:11px;color:var(--text-secondary);">按报销单类目金额核对；类别与金额一致的票据不再报异常。未匹配票据、缺失金额和金额差异都会写入下载表的“报销核对”工作表，可直接在表中标注或调整。</div>${claimSummaryRows || '<div style="font-size:11px;">没有可核对的报销单。</div>'}</div>`;
+    }
+    const errors = (data.parse_errors || []).length ? `<p style="color:var(--warning);margin-top:8px;">⚠️ 未处理文件：${escapeHtml(data.parse_errors.map(item => `${item.file}: ${item.error}`).join('；'))}</p>` : '';
+    const storageWarning = data.storage_warning ? `<p style="color:var(--warning);margin-top:8px;">⚠️ ${escapeHtml(data.storage_warning)}</p>` : '';
+    const coverage = data.coverage_summary || {};
+    const coverageFiles = (data.input_coverage || []).map(item => {
+      const fileStatusNames = {PROCESSED: '已处理', REVIEW_REQUIRED: '有校验待复核', FAILED: '处理失败', PROCESSING: '处理中'};
+      const pageStatusNames = {
+        OCR_FAILED: 'OCR失败', NO_TEXT: '无文字', PROJECTION_MISMATCH: '记录数量不一致', DUPLICATE_REVIEW: '重复票据候选', DIDI_AMOUNT_MISMATCH: '行程汇总与出租车票金额不一致',
+        EXPENSES_FOUND: '已匹配费用', UNMATCHED_RECEIPT_CUE: '出租车票线索未匹配',
+        UNMATCHED_INVOICE_CUE: '票据线索未匹配', PARTIAL_INVOICE_COVERAGE: '疑似漏票/类别不匹配',
+        ANNOTATION_AMOUNT_REVIEW: '手写批注金额待核对',
+        SUPPORTING_ONLY: '辅助材料', UNCLASSIFIED_PAGE: '页面内容待确认'
+      };
+      const pageRows = (item.pages || []).map(page => {
+        const amountText = (page.amounts || []).map(amount => `¥${Number(amount).toFixed(2)}`).join('、');
+        const reviewCandidates = (page.ocr_candidates || []).filter(candidate => candidate.matched !== true || candidate.source === 'handwritten_annotation');
+        const candidateText = reviewCandidates.map(candidate => {
+          const categories = {accommodation: '住宿', taxi: '打车/市内交通', ticket: '机票/火车票', special: '打车/市内交通'};
+          const recognizedCategory = candidate.category ? (categories[candidate.category] || candidate.category) : '类别不确定';
+          const sourceLabel = candidate.source === 'handwritten_annotation' ? '手写批注候选' : recognizedCategory;
+          return `¥${Number(candidate.amount_cny).toFixed(2)}（${sourceLabel}）`;
+        }).join('、');
+        const reasonText = (page.reasons || []).join('；');
+        const paddle = page.paddle_review || {};
+        const paddleChannels = (paddle.channels || []).map(candidate => {
+          const channelName = candidate.channel === 'R' ? '红色通道' : '原彩图';
+          const evidence = (candidate.amount_evidence || []).map(item => {
+            const fieldNames = {total_or_paid: '合计/实收', fare: '车费', tax: '税额', amount_label: '金额标签', unlabelled_amount: '无标签金额'};
+            const labels = (item.labels || []).join('/') || '无标签';
+            const value = item.value_text == null ? '未读到金额' : `¥${item.value_text}`;
+            const confidence = item.confidence != null && Number.isFinite(Number(item.confidence)) ? ` · 置信度 ${Number(item.confidence).toFixed(3)}` : '';
+            return `${fieldNames[item.field_type] || item.field_type} ${value}（${labels}，${item.association || '未关联'}${confidence}）`;
+          }).join('；');
+          const text = String(candidate.text || '').trim();
+          return `<details style="margin:3px 0 3px 14px;"><summary>${channelName} · ${Number(candidate.elapsed_ms || 0).toFixed(0)} ms${candidate.cache_status === 'HIT' ? ' · 缓存' : ''}</summary>${evidence ? `<div>${escapeHtml(evidence)}</div>` : ''}${text ? `<pre style="max-height:140px;overflow:auto;white-space:pre-wrap;font-size:10px;">${escapeHtml(text)}</pre>` : ''}</details>`;
+        }).join('');
+        const paddleLine = paddle.status ? `<div style="margin:3px 0 3px 14px;color:${paddle.status === 'FAILED' ? 'var(--warning)' : 'var(--text-secondary)'};">PaddleOCR 自动复核：${escapeHtml(paddle.status === 'COMPLETED' ? '已完成' : paddle.status === 'SKIPPED_LIMIT' ? '超过自动复核页数上限' : paddle.status === 'FAILED' ? '未完成' : paddle.status)}${paddle.message ? ` · ${escapeHtml(paddle.message)}` : ''}${paddleChannels}</div>` : '';
+        return `<li>第 ${Number(page.source_page)} 页：${escapeHtml(pageStatusNames[page.status] || page.status)} · Expense ${Number(page.expense_count || 0)} 条 / structured ${Number(page.invoice_count || 0)} 条${amountText ? ` · ${escapeHtml(amountText)}` : ''}${candidateText ? ` · OCR候选待核对 ${escapeHtml(candidateText)}` : ''}${reasonText ? ` · ${escapeHtml(reasonText)}` : ''}${paddleLine}</li>`;
+      }).join('');
+      const fileStatus = fileStatusNames[item.status] || item.status || '未知';
+      const invoiceSummary = item.invoice_validation || {};
+      const paddleReview = item.paddle_review || {};
+      const paddleSummary = paddleReview.status
+        ? `<p style="margin:4px 0;">自动 PaddleOCR：${escapeHtml((paddleReview.selected_pages || []).length ? `复核第 ${(paddleReview.selected_pages || []).join('、')} 页` : ((paddleReview.skipped_pages || []).length ? '本批次复读页数已达上限，疑似页保留原风险提示' : '没有需要复读的疑似页'))}${(paddleReview.skipped_pages || []).length ? `；第 ${paddleReview.skipped_pages.join('、')} 页因批次 3 页上限暂未复读` : ''}${paddleReview.elapsed_ms ? `；耗时 ${(Number(paddleReview.elapsed_ms) / 1000).toFixed(1)} 秒` : ''}${paddleReview.cache ? `；缓存命中 ${Number(paddleReview.cache.hits || 0)} 页、实际推理 ${Number(paddleReview.cache.misses || 0)} 页` : ''}${paddleReview.error ? `；${escapeHtml(paddleReview.error)}` : ''}</p>` : '';
+      const deliveryIssues = (item.delivery_issues || []).map(issue => `<li>${escapeHtml(issue.message || issue.code || '')}</li>`).join('');
+      const manualActions = (item.manual_actions || []).map(action => {
+        const actionName = action.action === 'add' ? '补录' : (action.action === 'ignore_fragment' ? '忽略残片' : '排除');
+        const actionAmount = action.amount_cny == null ? '' : ` ¥${Number(action.amount_cny).toFixed(2)}`;
+        return `<li>${escapeHtml(action.record_id || '')} · ${actionName}${actionAmount} · 第 ${Number(action.page || 0)} 页 · ${escapeHtml(action.action_status || '已应用')}</li>`;
+      }).join('');
+      const detail = item.error ? escapeHtml(item.error) : `${manualActions ? `<div>人工动作：</div><ul style="margin:4px 0 4px 20px;">${manualActions}</ul>` : ''}${paddleSummary}${pageRows ? `<ul style="font-size:11px;padding-left:22px;">${pageRows}</ul>` : '没有页面级明细'}${Number(invoiceSummary.review_required || 0) ? `<p>票据校验待复核：${Number(invoiceSummary.review_required)} 条（BLOCKED ${Number(invoiceSummary.status_counts?.BLOCKED || 0)} / WARNING ${Number(invoiceSummary.status_counts?.WARNING || 0)}）</p>` : ''}${deliveryIssues ? `<ul style="margin:4px 0 4px 20px;">${deliveryIssues}</ul>` : ''}`;
+      const color = item.status === 'FAILED' || item.status === 'REVIEW_REQUIRED' ? 'var(--warning)' : 'var(--text-secondary)';
+      return `<li><strong>${escapeHtml(item.file || '')}</strong>：<span style="color:${color};">${escapeHtml(fileStatus)}</span><details style="margin-left:8px;"><summary>查看页面状态（${(item.pages || []).length} 页/单元）</summary>${detail}</details></li>`;
+    }).join('');
+    const coverageBlock = `<details style="margin-top:8px;"><summary>文件与页面覆盖：${Number(coverage.files_processed || 0)}/${Number(coverage.files_submitted || 0)} 个文件已解析，${Number(coverage.pages_requiring_review || 0)} 页、${Number(coverage.invoices_requiring_review || 0)} 条票据待复核</summary><ul style="font-size:11px;padding-left:22px;">${coverageFiles || '<li>无覆盖明细</li>'}</ul></details>`;
+    const changes = (data.changes || []).slice(0, 120).map(change => `<li><code>${escapeHtml(`${change.sheet}!${change.cell}`)}</code>：${escapeHtml(String(change.before ?? ''))} → ${escapeHtml(String(change.after ?? ''))}</li>`).join('');
+    const previewBlock = previewOnly ? `<div style="margin-top:8px;color:var(--text-secondary);">模板未修改，本次映射变更 ${Number(data.change_count || 0)} 个单元格${data.truncated ? '（仅显示前 120 项）' : ''}。</div>${changes ? `<details style="margin-top:5px;"><summary>查看单元格变更</summary><ul style="font-size:11px;max-height:220px;overflow:auto;padding-left:22px;">${changes}</ul></details>` : ''}` : '';
+    const correctionBlock = previewOnly ? renderTravelCorrectionReview(data) : '';
+    const outputTitle = isPartial
+      ? (previewOnly ? '⚠️ 待复核草稿预览：存在覆盖或字段校验问题' : `⚠️ 待复核草稿已生成：${escapeHtml(data.output_name || '')}`)
+      : (previewOnly ? '🧪 映射预览完成：可直接使用' : `✅ 可直接使用的表格已生成：${escapeHtml(data.output_name || '')}`);
+    const outputPath = previewOnly ? '' : `<div style="font-size:12px;margin-top:5px;word-break:break-all;">审核结果已保存到：${escapeHtml(data.output_path || '')}</div>`;
+    const downloadLink = previewOnly ? '' : `<a class="btn btn-outline btn-sm" href="${escapeHtml(data.download_url || '#')}" style="display:inline-block;margin-top:9px;">⬇️ 下载新表</a>`;
+    const panelStyle = isPartial ? 'background:#fff8e7;border:1px solid #e8c76a;' : 'background:#edf8f0;border:1px solid #b7dfc1;';
+    const partialNotice = isPartial ? '<p style="color:var(--warning);margin:7px 0 0;">该文件目前是复核草稿，不能作为已确认交付使用。待处理项可能包括来源页缺失、金额/字段冲突、政策异常或未确认票据页面；下载后请先按下方状态核对。</p>' : '';
+    resultDiv.innerHTML = `<div style="padding:12px;${panelStyle}border-radius:6px;">
+      <strong>${outputTitle}</strong>
+      ${partialNotice}
+      ${outputPath}
+      <div style="font-size:12px;margin-top:4px;">差标计算方式：${escapeHtml(data.policy_name || document.getElementById('travelPolicySelect').value || 'VGC')}</div>
+      ${downloadLink}${claimBlock}${previewBlock}${correctionBlock}
+       <div style="overflow-x:auto;margin-top:10px;"><table class="data-table"><thead><tr><th>文件</th><th>姓名</th><th>城市</th><th>日期</th><th>识别明细</th><th>预计不含税合计</th><th>状态与诊断</th></tr></thead><tbody>${tripRows}</tbody></table></div>
+      ${coverageBlock}${storageWarning}${errors}
+    </div>`;
+    resultDiv.style.display = 'block';
+    showToast(isPartial ? 'warning' : 'success', isPartial ? '已生成待复核草稿，请先处理校验项' : (previewOnly ? '差旅映射预览完成，原模板未修改' : '差旅发票识别完成，已生成可用表格'));
+  } catch (e) {
+    const timedOut = String(e.message || e).includes('分钟仍未返回');
+    const connectionLost = /failed to fetch|load failed/i.test(String(e.message || e));
+    const failureDetail = connectionLost
+      ? '与工作台服务的连接中断。请确认服务仍在运行；如果刚提交过本批次，请先检查 output 中是否已生成审核表，再重新提交。'
+      : (e.message || String(e));
+    resultDiv.innerHTML = `<div style="padding:10px;background:#fff4f2;border:1px solid #efb7af;border-radius:6px;color:var(--danger);white-space:pre-wrap;">${timedOut ? '请求超时' : '识别失败'}：${escapeHtml(failureDetail)}</div>`;
+    resultDiv.style.display = 'block';
+    showToast('error', timedOut ? '差旅材料处理超时，可分批上传' : (connectionLost ? '审核服务连接中断' : '差旅发票识别失败'));
+  } finally {
+    btn.disabled = false;
+    previewBtn.disabled = false;
+    spinner.style.display = 'none';
+  }
+}
+
+// ---- Step 3: Data Sources ----
+async function scanDataSources() {
+  if (!budgetCurrentProject) { showToast('error', '请先在 Step 1 选择项目'); return; }
+  const btn = document.getElementById('btn-scan-ds');
+  const spinner = document.getElementById('spinner-scan-ds');
+  const div = document.getElementById('dsResults');
+  btn.disabled = true;
+  spinner.style.display = 'inline';
+  const data = await apiGet('/api/po/data-sources?project=' + encodeURIComponent(budgetCurrentProject));
+  btn.disabled = false;
+  spinner.style.display = 'none';
+  if (data && data.sources) {
+    div.innerHTML = data.sources.map(s =>
+      `<div style="padding:4px 0;">${s.exists ? '✅' : '❌'} ${s.name} ${s.exists ? '' : '(未找到)'}</div>`
+    ).join('');
+    autoOpenStep('step4');
+  } else {
+    div.textContent = '扫描失败';
+  }
+}
+
+// ---- Step 4: Preview & Write ----
+async function budgetPreview() {
+  if (!budgetCurrentProject) { showToast('error', '请先在 Step 1 选择项目'); return; }
+  const btn = document.getElementById('btn-budget-preview');
+  const spinner = document.getElementById('spinner-budget-wb');
+  const diffDiv = document.getElementById('budget-diff-summary');
+  const output = document.getElementById('output-budget-wb');
+  btn.disabled = true;
+  spinner.style.display = 'inline';
+  diffDiv.style.display = 'none';
+  diffDiv.textContent = '';
+  output.classList.remove('show');
+  output.textContent = '正在分析差异（可能需要 30-60 秒）...';
+  try {
+    const result = await apiPost('/api/budget/preview', { project: budgetCurrentProject }, 120000);
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    output.classList.remove('show');
+    if (result && result.diff_summary) {
+      diffDiv.textContent = result.diff_summary;
+      diffDiv.style.display = 'block';
+      if (result.has_changes) {
+        showToast('info', '检测到变更，请检查差异后确认');
+      } else {
+        diffDiv.textContent = '无变更 - Budget Report 已是最新状态。';
+        showToast('success', '无差异，无需回写');
+      }
+    } else {
+      const errText = (result?.stdout || '') + '\n\n--- stderr ---\n' + (result?.stderr || '');
+      output.textContent = errText || '[错误] 服务器未返回有效响应';
+      output.classList.add('show');
+      showToast('error', result?.error || '预览失败，详见下方输出');
+    }
+  } catch (e) {
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    output.textContent = '[错误] ' + (e.message || e);
+    output.classList.add('show');
+    showToast('error', '预览请求失败');
+  }
+}
+
+async function budgetWrite() {
+  if (!budgetCurrentProject) { showToast('error', '请先在 Step 1 选择项目'); return; }
+  const btn = document.getElementById('btn-budget-write');
+  const spinner = document.getElementById('spinner-budget-wb');
+  const output = document.getElementById('output-budget-wb');
+  const diffDiv = document.getElementById('budget-diff-summary');
+  if (!confirm('即将回写 Budget Report。系统会自动：\n① 创建备份文件\n② 写入更新\n③ 生成 PO Usage Status\n\n确认继续？')) {
+    return;
+  }
+  btn.disabled = true;
+  spinner.style.display = 'inline';
+  output.classList.remove('show');
+  output.textContent = '正在写入 Budget Report（可能需要 30-60 秒）...';
+  diffDiv.style.display = 'none';
+  try {
+    const result = await apiPost('/api/budget/write', { project: budgetCurrentProject }, 360000);
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    if (result && result.ok) {
+      output.textContent = result.stdout || '回写完成';
+      output.classList.add('show');
+      if (result.no_changes) {
+        showToast('info', '没有需要回写的差异');
+      } else if (result.warning) {
+        showToast('info', '原文件被占用，已生成校验通过的新版本；请按输出路径打开');
+        loadOutputs();
+      } else {
+        showToast('success', 'Budget Report 已更新');
+        loadOutputs();
+      }
+    } else {
+      output.textContent = (result?.stdout || '') + '\n\n--- stderr ---\n' + (result?.stderr || '');
+      output.classList.add('show');
+      showToast('error', '回写出错，详见下方输出');
+    }
+  } catch (e) {
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    output.textContent = '[错误] ' + (e.message || e);
+    output.classList.add('show');
+    showToast('error', '回写请求失败');
+  }
+}
+
+async function generateWorkingUsageStatus() {
+  if (!budgetCurrentProject) { showToast('error', '请先选择项目'); return; }
+  const btn = document.getElementById('btn-working-usage-status');
+  const spinner = document.getElementById('spinner-working-usage-status');
+  const output = document.getElementById('output-working-usage-status');
+  btn.disabled = true;
+  spinner.style.display = 'inline';
+  output.classList.remove('show');
+  output.textContent = '正在生成保留公式的 Working 版...';
+  try {
+    const result = await apiPost('/api/budget/usage-status-working', { project: budgetCurrentProject }, 180000);
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    output.textContent = result?.output ? `已生成：${result.output}\n原模板公式：${result.original_formula_count}\n输出公式：${result.final_formula_count}\n状态：${result.audit?.run_status || 'REVIEW_REQUIRED'}` : ((result?.stdout || '') + '\n' + (result?.stderr || ''));
+    output.classList.add('show');
+    showToast(result?.ok ? 'success' : 'error', result?.ok ? 'Working 版已生成，等待审核' : '生成失败');
+    if (result?.ok) loadOutputs();
+  } catch (e) {
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    output.textContent = '[错误] ' + (e.message || e);
+    output.classList.add('show');
+    showToast('error', 'Working 版生成请求失败');
+  }
+}
+
+async function generateUsageStatus() {
+  if (!budgetCurrentProject) { showToast('error', '请先选择项目'); return; }
+  const btn = document.getElementById('btn-usage-status');
+  const spinner = document.getElementById('spinner-usage-status');
+  const output = document.getElementById('output-usage-status');
+  btn.disabled = true;
+  spinner.style.display = 'inline';
+  output.classList.remove('show');
+  output.textContent = '正在生成 PO Usage Status...';
+  try {
+    const result = await apiPost('/api/budget/usage-status/allocated', { project: budgetCurrentProject }, 360000);
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    output.textContent = result?.ok ? (result.stdout || 'PO Usage Status 已更新') : (result?.error || result?.stderr || 'PO Usage Status 更新失败');
+    output.classList.add('show');
+    if (!result?.ok) showToast('error', 'PO Usage Status 更新失败');
+    else if (result.warning) showToast('info', '状态文件已生成到本地 output，请复制到项目目录');
+    else showToast('success', 'PO Usage Status 已生成');
+  } catch (e) {
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    output.textContent = '[错误] ' + (e.message || e);
+    output.classList.add('show');
+    showToast('error', '生成请求失败');
+  }
+}
+
+// ---- Section 2: Monthly Write-Back ----
+function updateMonthlyUsageStatusButton() {
+  const project = document.getElementById('monthlyProject').value;
+  const button = document.getElementById('btn-monthly-usage-status');
+  if (button) button.style.display = project === 'CNTS-25165' ? 'inline-block' : 'none';
+}
+
+async function updateMonthlyUsageStatus() {
+  const project = document.getElementById('monthlyProject').value;
+  const month = document.getElementById('monthlyMonth').value.trim();
+  if (project !== 'CNTS-25165') {
+    showToast('error', 'PO Usage Status 当前仅配置用于 CNTS-25165');
+    return;
+  }
+
+  const btn = document.getElementById('btn-monthly-usage-status');
+  const spinner = document.getElementById('spinner-monthly-usage-status');
+  const output = document.getElementById('output-monthly-usage-status');
+  const asOf = /^\d{6}$/.test(month) ? `${month.slice(0, 4)}-${month.slice(4)}` : month;
+  btn.disabled = true;
+  spinner.style.display = 'inline';
+  output.classList.remove('show');
+  output.textContent = '正在根据当前 Budget Report 和 PO 分配结果生成状态文件...';
+
+  try {
+    const result = await apiPost('/api/budget/usage-status/allocated', {
+      project,
+      ...(asOf ? { as_of: asOf } : {}),
+    }, 360000);
+    output.textContent = result?.ok ? (result.stdout || 'PO Usage Status 已更新') : (result?.error || result?.stderr || 'PO Usage Status 更新失败');
+    output.classList.add('show');
+    if (!result?.ok) showToast('error', 'PO Usage Status 更新失败');
+    else if (result.warning) showToast('info', '状态文件已生成到本地 output，请复制到项目目录');
+    else showToast('success', 'PO Usage Status 已更新');
+  } catch (e) {
+    output.textContent = '[错误] ' + (e.message || e);
+    output.classList.add('show');
+    showToast('error', 'PO Usage Status 更新请求失败');
+  } finally {
+    btn.disabled = false;
+    spinner.style.display = 'none';
+  }
+}
+
+async function runMonthlyWrite() {
+  const project = document.getElementById('monthlyProject').value;
+  const month = document.getElementById('monthlyMonth').value.trim();
+  if (!project) { showToast('error', '请选择项目'); return; }
+
+  const btn = document.getElementById('btn-monthly-write');
+  const spinner = document.getElementById('spinner-monthly-write');
+  const output = document.getElementById('output-monthly-write');
+  btn.disabled = true;
+  spinner.style.display = 'inline';
+  output.classList.remove('show');
+  output.textContent = '正在读取 Monthly Closing 和已审核工时表并生成回写预览...';
+
+  const body = { project: project, mode: 'write' };
+  if (month) body.month = month;
+  const result = await apiPost('/api/run/budget', body, 360000);
+
+  btn.disabled = false;
+  spinner.style.display = 'none';
+  output.textContent = (result?.error ? `[API错误] ${result.error}\n\n` : '')
+    + (result?.stdout || '') + '\n\n--- stderr ---\n' + (result?.stderr || '');
+  output.classList.add('show');
+  if (result && result.ok && result.written) {
+    if (result.warning) showToast('info', '原文件被占用，已生成校验通过的新版本；请按输出路径打开');
+    else showToast('success', '月度回写完成');
+    loadOutputs();
+  } else if (result && result.ok && result.no_changes) {
+    showToast('info', '没有检测到需要回写的差异');
+  } else {
+    showToast('error', '月度回写出错，详见下方输出');
+  }
+}
+
+// ---- Section 3: Department Dashboard ----
+async function loadDeptDashboard(dept, btn) {
+  document.querySelectorAll('.dept-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const spinner = document.getElementById('spinner-dashboard');
+  spinner.style.display = 'inline';
+
+  const data = await apiGet('/api/budget/dashboard?dept=' + encodeURIComponent(dept));
+  spinner.style.display = 'none';
+  if (!data || !data.projects) {
+    document.getElementById('kpiGrid').innerHTML = '<div style="color:var(--text-secondary);">加载失败</div>';
+    return;
+  }
+
+  const totalHours = data.projects.reduce((s, p) => s + (p.hours || 0), 0);
+  const totalTravel = data.projects.reduce((s, p) => s + (p.travel || 0), 0);
+  const totalPOs = data.projects.reduce((s, p) => s + (p.po_count || 0), 0);
+  const totalActivePOs = data.projects.reduce((s, p) => s + (p.po_active || 0), 0);
+
+  document.getElementById('kpiGrid').innerHTML =
+    `<div class="kpi-card"><div class="kpi-value">${totalHours.toFixed(0)}h</div><div class="kpi-label">总工时</div></div>
+     <div class="kpi-card"><div class="kpi-value">¥${(totalTravel/1000).toFixed(0)}k</div><div class="kpi-label">总差旅</div></div>
+     <div class="kpi-card"><div class="kpi-value">${totalActivePOs}/${totalPOs}</div><div class="kpi-label">活跃 PO</div></div>
+     <div class="kpi-card"><div class="kpi-value">${data.projects.length}</div><div class="kpi-label">项目数</div></div>`;
+
+  const maxHours = Math.max(1, ...data.projects.map(p => p.hours || 0));
+  let tableHtml = '<table class="data-table"><thead><tr><th>项目</th><th>工时(h)</th><th>进度</th><th>差旅(RMB)</th><th>活跃PO</th></tr></thead><tbody>';
+  for (const p of data.projects) {
+    const pct = maxHours > 0 ? Math.round((p.hours || 0) / maxHours * 100) : 0;
+    const fillClass = pct > 80 ? 'high' : (pct > 40 ? 'mid' : 'low');
+    tableHtml += `<tr>
+      <td><strong>${p.code}</strong><br><small>${p.name || ''}</small></td>
+      <td>${(p.hours || 0).toFixed(1)}</td>
+      <td><div class="progress-bar"><div class="progress-fill ${fillClass}" style="width:${pct}%"></div></div> <small>${pct}%</small></td>
+      <td>¥${(p.travel || 0).toLocaleString()}</td>
+      <td>${p.po_active || 0}/${p.po_count || 0}</td>
+    </tr>`;
+  }
+  tableHtml += '</tbody></table>';
+  document.getElementById('dashboardTable').innerHTML = tableHtml;
+}
+
 </script>
 
 </body>

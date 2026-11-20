@@ -8,9 +8,14 @@ __pycache__/
 venv/
 .venv/
 env/
+.paddle-venv/
+.paddle-home/
+.paddle-cache/
+.paddle-tmp/
 
 # IDE
-.vscode/
+.vscode/*
+!.vscode/launch.json
 .idea/
 
 # Output files (generated Excel reports)

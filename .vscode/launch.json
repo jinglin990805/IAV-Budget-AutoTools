@@ -1,0 +1,49 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python Debugger: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "python": "${workspaceFolder}/.paddle-venv/Scripts/python.exe",
+      "program": "${file}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Debug travel PDF parser",
+      "type": "debugpy",
+      "request": "launch",
+      "python": "${workspaceFolder}/.paddle-venv/Scripts/python.exe",
+      "program": "${workspaceFolder}/debug_travel_invoice.py",
+      "args": [
+        "${input:travelPdfPath}"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    },
+    {
+      "name": "Debug workbench API on port 8766",
+      "type": "debugpy",
+      "request": "launch",
+      "python": "${workspaceFolder}/.paddle-venv/Scripts/python.exe",
+      "program": "${workspaceFolder}/api_server.py",
+      "args": [
+        "--port",
+        "8766",
+        "--no-browser"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false,
+      "subProcess": false
+    }
+  ],
+  "inputs": [
+    {
+      "id": "travelPdfPath",
+      "type": "promptString",
+      "description": "Enter the full path to the travel PDF"
+    }
+  ]
+}

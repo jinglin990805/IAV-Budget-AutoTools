@@ -179,16 +179,39 @@ def parse_ticketsbuchung(filepath, month_str):
     """
     items = []
     try:
-        # Use xlrd for .xls files
-        import xlrd
-        wb = xlrd.open_workbook(filepath)
-        for sn in wb.sheet_names():
-            ws = wb.sheet_by_name(sn)
-            if ws.nrows < 2:
+        # Monthly statements are normally old-style .xls, but some months were
+        # saved as .xlsx. xlrd refuses those ("Excel xlsx file; not supported"),
+        # so pick the reader from the real file format instead of assuming.
+        with open(filepath, "rb") as fh:
+            is_xlsx = fh.read(2) == b"PK"
+        sheets = []
+        if is_xlsx:
+            from openpyxl import load_workbook
+            wb = load_workbook(filepath, read_only=True, data_only=True)
+            for ws in wb.worksheets:
+                sheets.append([list(row) for row in ws.iter_rows(values_only=True)])
+            wb.close()
+        else:
+            import xlrd
+            xls_wb = xlrd.open_workbook(filepath)
+            for sn in xls_wb.sheet_names():
+                ws = xls_wb.sheet_by_name(sn)
+                sheets.append([[ws.cell_value(r, c) for c in range(ws.ncols)]
+                               for r in range(ws.nrows)])
+
+        for rows in sheets:
+            if len(rows) < 2:
                 continue
+            ncols = max(len(row) for row in rows)
+
+            def cell(r, c):
+                if r >= len(rows) or c >= len(rows[r]):
+                    return ""
+                value = rows[r][c]
+                return "" if value is None else value
 
             # Find header row
-            headers = [str(ws.cell_value(0, c)).strip() for c in range(ws.ncols)]
+            headers = [str(cell(0, c)).strip() for c in range(ncols)]
             header_row = 0
 
             # Columns
@@ -200,13 +223,13 @@ def parse_ticketsbuchung(filepath, month_str):
             date_col = next((i for i, h in enumerate(headers)
                             if "日期" in h or "Datum" in h or "Date" in h), None)
 
-            for r in range(1, ws.nrows):
-                name = str(ws.cell_value(r, name_col)).strip() if name_col < ws.ncols else ""
-                proj = str(ws.cell_value(r, proj_col)).strip() if proj_col is not None and proj_col < ws.ncols else ""
+            for r in range(1, len(rows)):
+                name = str(cell(r, name_col)).strip() if name_col < ncols else ""
+                proj = str(cell(r, proj_col)).strip() if proj_col is not None and proj_col < ncols else ""
                 amt = 0
-                if amount_col is not None and amount_col < ws.ncols:
+                if amount_col is not None and amount_col < ncols:
                     try:
-                        amt = abs(float(ws.cell_value(r, amount_col)))
+                        amt = abs(float(cell(r, amount_col)))
                     except (ValueError, TypeError):
                         pass
                 if amt > 0:

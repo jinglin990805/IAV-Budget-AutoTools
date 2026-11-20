@@ -221,6 +221,148 @@ def extract_project_key(wbs_element, wbs_map=None):
     return wbs
 
 
+def read_sheet_raw(path, sheet_name=None):
+    """
+    读取一个 sheet 的全部数据，保留原始值（不转为字符串）
+    Returns: (headers list, rows list of lists with raw values)
+    """
+    wb = safe_load_workbook(path)
+    if wb is None:
+        return [], []
+
+    if sheet_name is None:
+        sheet_name = wb.sheetnames[0]
+
+    if sheet_name not in wb.sheetnames:
+        print(f"[WARNING] Sheet '{sheet_name}' not found. Available: {wb.sheetnames}")
+        wb.close()
+        return [], []
+
+    ws = wb[sheet_name]
+    rows = []
+    for row in ws.iter_rows(min_row=1, max_row=ws.max_row, values_only=True):
+        rows.append(list(row))
+
+    wb.close()
+    headers = rows[0] if rows else []
+    data = rows[1:] if len(rows) > 1 else []
+    return headers, data
+
+
+# ============================================================
+# 名称标准化
+# ============================================================
+
+def normalize_name_last_first(raw_name):
+    """
+    将 "Last, First" 格式转为 "First Last" 格式
+    处理边界情况：
+      "Tang, Qiwei"  → "Tang Qiwei"
+      "Li, Xiaoxuan" → "Li Xiaoxuan"
+      "Tang Qiwei"   → "Tang Qiwei" (不变)
+      中文名原样保留
+    """
+    if not raw_name:
+        return ""
+    name = str(raw_name).strip()
+    # "Last, First" 格式
+    if ',' in name:
+        parts = name.split(',', 1)
+        last = parts[0].strip()
+        first = parts[1].strip() if len(parts) > 1 else ""
+        return f"{first} {last}".strip()
+    return name
+
+
+# ============================================================
+# 日期/月份解析
+# ============================================================
+
+def parse_date_month(date_value):
+    """
+    从各种日期格式中提取 "YYYY-MM" 字符串
+    支持:
+      - datetime.datetime(2026, 1, 26) → "2026-01"
+      - "2026-01-26 00:00:00" → "2026-01"
+      - "2026-Jan" → "2026-01"
+      - 2026-01-26 (date类型) → "2026-01"
+      - "2026-01" → "2026-01" (不变)
+    Returns: "YYYY-MM" str or None
+    """
+    import re
+    if date_value is None:
+        return None
+
+    # datetime 对象
+    if isinstance(date_value, datetime):
+        return date_value.strftime("%Y-%m")
+
+    s = str(date_value).strip()
+    if not s:
+        return None
+
+    # "2026-01-26" 或 "2026-01-26 00:00:00"
+    match = re.match(r'(\d{4})-(\d{2})-\d{2}', s)
+    if match:
+        return f"{match.group(1)}-{match.group(2)}"
+
+    # "2026-Jan"
+    month_names = {
+        "jan": "01", "feb": "02", "mar": "03", "apr": "04",
+        "may": "05", "jun": "06", "jul": "07", "aug": "08",
+        "sep": "09", "oct": "10", "nov": "11", "dec": "12",
+        "january": "01", "february": "02", "march": "03", "april": "04",
+        "june": "06", "july": "07", "august": "08",
+        "september": "09", "october": "10", "november": "11", "december": "12",
+    }
+    match = re.match(r'(\d{4})-([A-Za-z]+)', s)
+    if match:
+        year = match.group(1)
+        month_name = match.group(2).lower()
+        if month_name in month_names:
+            return f"{year}-{month_names[month_name]}"
+
+    # 已经是 "YYYY-MM"
+    if re.match(r'^\d{4}-\d{2}$', s):
+        return s
+
+    return None
+
+
+def infer_level_from_rate(rate, rate_map=None):
+    """
+    从日费率推断 Level
+    2460 → "Testing Engineer-Expert"
+    2260 → "Testing Engineer-Senior"
+    2100 → "Testing Engineer-Experienced"
+    1600 → "Testing Engineer-Junior"
+
+    使用最近值匹配（允许小偏差）
+    """
+    if rate_map is None:
+        rate_map = {
+            2460: "Testing Engineer-Expert",
+            2260: "Testing Engineer-Senior",
+            2100: "Testing Engineer-Experienced",
+            1600: "Testing Engineer-Junior",
+        }
+    try:
+        r = float(rate)
+    except (TypeError, ValueError):
+        return None
+
+    # 精确匹配
+    if r in rate_map:
+        return rate_map[r]
+
+    # 最近值匹配 (容差 5%)
+    closest = min(rate_map.keys(), key=lambda k: abs(k - r))
+    if abs(closest - r) / closest < 0.05:
+        return rate_map[closest]
+
+    return None
+
+
 def normalize_wbs(wbs_element):
     """规范化 WBS 格式，去除全角字符等"""
     if not wbs_element:
